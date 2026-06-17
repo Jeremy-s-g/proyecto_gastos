@@ -20,13 +20,37 @@ Durante este dia se realizo:
 - Conexion del proyecto local con GitHub.
 - Primera publicacion del repositorio remoto.
 
+## Avance del dia 2
+
+Durante el segundo dia se mejoro la estructura base del documento HTML y se agrego documentacion inicial del proyecto.
+
+Durante este dia se realizo:
+
+- Normalizacion de etiquetas HTML.
+- Agregado de etiquetas semanticas como `header`, `main`, `section` y `footer`.
+- Configuracion de caracteres con `UTF-8`.
+- Configuracion inicial para dispositivos moviles con `viewport`.
+- Creacion del archivo `README.md`.
+- Publicacion de los avances en GitHub.
+
+## Avance del dia 3
+
+Durante el tercer dia se comenzo a orientar la estructura HTML hacia las funcionalidades reales del proyecto.
+
+Durante este dia se realizo:
+
+- Creacion de una seccion para ingresos familiares.
+- Creacion de una seccion para gastos mensuales.
+- Creacion de una seccion para deudas pendientes.
+- Separacion inicial del proyecto por areas funcionales.
+
 ## Objetivo
 
 Construir una aplicacion para organizar ingresos, gastos y deudas familiares, aprendiendo paso a paso HTML, CSS, JavaScript, Git, GitHub y tecnologias Full Stack.
 
 ## Estado actual
 
-Dia 2 de aprendizaje.
+Dia 3 de aprendizaje.
 
 Actualmente el proyecto tiene una estructura HTML inicial con:
 
@@ -35,6 +59,7 @@ Actualmente el proyecto tiene una estructura HTML inicial con:
 - configuracion responsive inicial,
 - cabecera,
 - contenido principal,
+- secciones para ingresos, gastos y deudas,
 - pie de pagina.
 
 ## Tecnologias utilizadas
@@ -45,6 +70,6 @@ Actualmente el proyecto tiene una estructura HTML inicial con:
 
 ## Proximos pasos
 
+- Agregar listas iniciales dentro de ingresos, gastos y deudas.
 - Mejorar la estructura HTML.
 - Agregar estilos con CSS.
-- Crear secciones para ingresos, gastos y deudas.

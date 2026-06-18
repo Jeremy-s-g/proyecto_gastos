@@ -48,3 +48,11 @@ footer {
   color: #52606d;
   font-size: 0.9rem;
 }
+
+ul {
+  padding-left: 20px;
+}
+
+.card li::marker {
+  color: #2f855a;
+}

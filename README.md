@@ -71,26 +71,38 @@ Durante este dia se realizo:
 - Primera prueba de JavaScript usando `console.log`.
 - Primeros estilos visuales para que la pagina deje de verse como HTML plano.
 
+## Avance del dia 6
+
+Durante el sexto dia se mejoro la estructura visual del proyecto usando CSS moderno.
+
+Durante este dia se realizo:
+
+- Agregado de clases HTML para preparar estilos reutilizables.
+- Creacion de un layout de tarjetas para las secciones principales.
+- Uso inicial de CSS Grid.
+- Creacion de una grilla responsive con `auto-fit` y `minmax`.
+- Mejora visual de las listas usando `::marker`.
+- Separacion mas clara entre estructura HTML y presentacion visual con CSS.
+
 ## Objetivo
 
 Construir una aplicacion para organizar ingresos, gastos y deudas familiares, aprendiendo paso a paso HTML, CSS, JavaScript, Git, GitHub y tecnologias Full Stack.
 
 ## Estado actual
 
-Dia 5 de aprendizaje.
+Dia 6 de aprendizaje.
 
-Actualmente el proyecto tiene una estructura HTML inicial con:
+Actualmente el proyecto tiene:
 
-- titulo del documento,
+- estructura HTML semantica,
 - configuracion basica para caracteres,
 - configuracion responsive inicial,
-- cabecera,
-- contenido principal,
 - secciones para ingresos, gastos y deudas,
 - listas iniciales de datos financieros,
-- pie de pagina,
 - hoja de estilos externa,
-- archivo JavaScript inicial conectado.
+- archivo JavaScript inicial conectado,
+- layout visual con tarjetas,
+- grilla responsive con CSS Grid.
 
 ## Tecnologias utilizadas
 
@@ -102,7 +114,7 @@ Actualmente el proyecto tiene una estructura HTML inicial con:
 
 ## Proximos pasos
 
-- Mejorar el layout visual de la aplicacion.
-- Crear tarjetas para ingresos, gastos y deudas.
-- Preparar datos simulados con JavaScript moderno.
+- Mejorar la apariencia general de la aplicacion.
+- Agregar datos simulados con JavaScript moderno.
+- Representar ingresos, gastos y deudas usando arrays y objetos.
 - Renderizar informacion financiera desde JavaScript.

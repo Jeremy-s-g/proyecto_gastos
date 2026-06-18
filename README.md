@@ -44,13 +44,25 @@ Durante este dia se realizo:
 - Creacion de una seccion para deudas pendientes.
 - Separacion inicial del proyecto por areas funcionales.
 
+## Avance del dia 4
+
+Durante el cuarto dia se agregaron datos iniciales a las secciones principales del proyecto.
+
+Durante este dia se realizo:
+
+- Agregado de una lista inicial de ingresos familiares.
+- Agregado de una lista inicial de gastos mensuales.
+- Agregado de una lista inicial de deudas pendientes.
+- Practica de etiquetas `ul` y `li` para representar datos agrupados.
+- Revision de etiquetas anidadas correctamente.
+
 ## Objetivo
 
 Construir una aplicacion para organizar ingresos, gastos y deudas familiares, aprendiendo paso a paso HTML, CSS, JavaScript, Git, GitHub y tecnologias Full Stack.
 
 ## Estado actual
 
-Dia 3 de aprendizaje.
+Dia 4 de aprendizaje.
 
 Actualmente el proyecto tiene una estructura HTML inicial con:
 
@@ -60,6 +72,7 @@ Actualmente el proyecto tiene una estructura HTML inicial con:
 - cabecera,
 - contenido principal,
 - secciones para ingresos, gastos y deudas,
+- listas iniciales de datos financieros,
 - pie de pagina.
 
 ## Tecnologias utilizadas
@@ -70,6 +83,6 @@ Actualmente el proyecto tiene una estructura HTML inicial con:
 
 ## Proximos pasos
 
-- Agregar listas iniciales dentro de ingresos, gastos y deudas.
-- Mejorar la estructura HTML.
-- Agregar estilos con CSS.
+- Mejorar la estructura visual con CSS.
+- Crear una hoja de estilos externa.
+- Preparar la interfaz para mostrar informacion financiera con mejor organizacion.

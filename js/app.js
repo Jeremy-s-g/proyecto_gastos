@@ -30,6 +30,13 @@ const gastos = [
 
 const deudas = ["Tarjeta de credito", "Credito de consumo", "Compra en cuotas"];
 
+let totalGastos = 0;
+
+for (const gasto of gastos) {
+  totalGastos = totalGastos + gasto.monto;
+}
+
 console.log("Ingresos:", ingresos);
 console.log("Gastos:", gastos);
 console.log("Deudas:", deudas);
+console.log("Total de gastos:", totalGastos);

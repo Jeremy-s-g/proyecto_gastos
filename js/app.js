@@ -40,3 +40,34 @@ console.log("Ingresos:", ingresos);
 console.log("Gastos:", gastos);
 console.log("Deudas:", deudas);
 console.log("Total de gastos:", totalGastos);
+
+// --- Renderizar ingresos ---
+const listaIngresos = document.getElementById("lista-ingresos");
+
+for (const ingreso of ingresos) {
+  const li = document.createElement("li");
+  li.textContent = ingreso;
+  listaIngresos.appendChild(li);
+}
+
+// --- Renderizar gastos ---
+const listaGastos = document.getElementById("lista-gastos");
+
+for (const gasto of gastos) {
+  const li = document.createElement("li");
+  li.textContent = `${gasto.nombre} - $${gasto.monto.toLocaleString("es-CL")}`;
+  listaGastos.appendChild(li);
+}
+
+// --- Mostrar total de gastos ---
+const totalGastosEl = document.getElementById("total-gastos");
+totalGastosEl.textContent = `Total gastos: $${totalGastos.toLocaleString("es-CL")}`;
+
+// --- Renderizar deudas ---
+const listaDeudas = document.getElementById("lista-deudas");
+
+for (const deuda of deudas) {
+  const li = document.createElement("li");
+  li.textContent = deuda;
+  listaDeudas.appendChild(li);
+}

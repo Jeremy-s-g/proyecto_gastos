@@ -44,6 +44,41 @@ li {
   margin-bottom: 6px;
 }
 
+#total-ingresos,
+#total-gastos {
+  font-weight: bold;
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid #d9e2ec;
+}
+
+#balance {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.balance-positivo {
+  color: #22543d;
+  background-color: #f0fff4;
+  border: 1px solid #c6f6d5;
+}
+
+.balance-negativo {
+  color: #742a2a;
+  background-color: #fff5f5;
+  border: 1px solid #fed7d7;
+}
+
+.balance-cero {
+  color: #4a5568;
+  background-color: #f7fafc;
+  border: 1px solid #e2e8f0;
+}
+
 footer {
   color: #52606d;
   font-size: 0.9rem;

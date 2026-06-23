@@ -1,4 +1,8 @@
-const ingresos = ["Sueldo principal", "Sueldo secundario", "Ingreso adicional"];
+const ingresos = [
+  { nombre: "Sueldo principal", monto: 800000 },
+  { nombre: "Sueldo secundario", monto: 400000 },
+  { nombre: "Ingreso adicional", monto: 100000 }
+];
 
 const gastos = [
   {
@@ -36,18 +40,44 @@ for (const gasto of gastos) {
   totalGastos = totalGastos + gasto.monto;
 }
 
+let totalIngresos = 0;
+
+for (const ingreso of ingresos) {
+  totalIngresos = totalIngresos + ingreso.monto;
+}
+
+const balance = totalIngresos - totalGastos;
+
 console.log("Ingresos:", ingresos);
 console.log("Gastos:", gastos);
 console.log("Deudas:", deudas);
 console.log("Total de gastos:", totalGastos);
+console.log("Total de ingresos:", totalIngresos);
+console.log("Balance:", balance);
 
 // --- Renderizar ingresos ---
 const listaIngresos = document.getElementById("lista-ingresos");
 
 for (const ingreso of ingresos) {
   const li = document.createElement("li");
-  li.textContent = ingreso;
+  li.textContent = `${ingreso.nombre} - $${ingreso.monto.toLocaleString("es-CL")}`;
   listaIngresos.appendChild(li);
+}
+
+const totalIngresosEl = document.getElementById("total-ingresos");
+totalIngresosEl.textContent = `Total ingresos: $${totalIngresos.toLocaleString("es-CL")}`;
+
+const balanceEl = document.getElementById("balance");
+
+if (balance > 0) {
+  balanceEl.textContent = `Balance: +$${balance.toLocaleString("es-CL")}`;
+  balanceEl.className = "balance-positivo";
+} else if (balance < 0) {
+  balanceEl.textContent = `Balance: -$${Math.abs(balance).toLocaleString("es-CL")}`;
+  balanceEl.className = "balance-negativo";
+} else {
+  balanceEl.textContent = `Balance: $0`;
+  balanceEl.className = "balance-cero";
 }
 
 // --- Renderizar gastos ---

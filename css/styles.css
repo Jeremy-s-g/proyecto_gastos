@@ -45,7 +45,8 @@ li {
 }
 
 #total-ingresos,
-#total-gastos {
+#total-gastos,
+#total-deudas {
   font-weight: bold;
   margin-top: 12px;
   padding-top: 8px;

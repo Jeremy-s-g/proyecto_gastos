@@ -32,7 +32,11 @@ const gastos = [
   }
 ];
 
-const deudas = ["Tarjeta de credito", "Credito de consumo", "Compra en cuotas"];
+const deudas = [
+  { nombre: "Tarjeta de credito", monto: 200000, estado: "Pagando" },
+  { nombre: "Credito de consumo", monto: 500000, estado: "Atrasado" },
+  { nombre: "Compra en cuotas", monto: 120000, estado: "Al dia" }
+];
 
 let totalGastos = 0;
 
@@ -48,12 +52,19 @@ for (const ingreso of ingresos) {
 
 const balance = totalIngresos - totalGastos;
 
+let totalDeudas = 0;
+
+for (const deuda of deudas) {
+  totalDeudas = totalDeudas + deuda.monto;
+}
+
 console.log("Ingresos:", ingresos);
 console.log("Gastos:", gastos);
 console.log("Deudas:", deudas);
 console.log("Total de gastos:", totalGastos);
 console.log("Total de ingresos:", totalIngresos);
 console.log("Balance:", balance);
+console.log("Total de deudas:", totalDeudas);
 
 // --- Renderizar ingresos ---
 const listaIngresos = document.getElementById("lista-ingresos");
@@ -98,6 +109,9 @@ const listaDeudas = document.getElementById("lista-deudas");
 
 for (const deuda of deudas) {
   const li = document.createElement("li");
-  li.textContent = deuda;
+  li.textContent = `${deuda.nombre} - $${deuda.monto.toLocaleString("es-CL")} (${deuda.estado})`;
   listaDeudas.appendChild(li);
 }
+
+const totalDeudasEl = document.getElementById("total-deudas");
+totalDeudasEl.textContent = `Total deudas: $${totalDeudas.toLocaleString("es-CL")}`;

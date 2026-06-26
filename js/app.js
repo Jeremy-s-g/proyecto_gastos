@@ -38,80 +38,107 @@ const deudas = [
   { nombre: "Compra en cuotas", monto: 120000, estado: "Al dia" }
 ];
 
-let totalGastos = 0;
+function renderAll() {
+  // --- Calcular totales desde los arrays ---
+  let totalGastos = 0;
 
-for (const gasto of gastos) {
-  totalGastos = totalGastos + gasto.monto;
+  for (const gasto of gastos) {
+    totalGastos = totalGastos + gasto.monto;
+  }
+
+  let totalIngresos = 0;
+
+  for (const ingreso of ingresos) {
+    totalIngresos = totalIngresos + ingreso.monto;
+  }
+
+  const balance = totalIngresos - totalGastos;
+
+  let totalDeudas = 0;
+
+  for (const deuda of deudas) {
+    totalDeudas = totalDeudas + deuda.monto;
+  }
+
+  // --- Renderizar ingresos ---
+  const listaIngresos = document.getElementById("lista-ingresos");
+  listaIngresos.innerHTML = "";
+
+  for (let i = 0; i < ingresos.length; i++) {
+    const li = document.createElement("li");
+    li.textContent = `${ingresos[i].nombre} - $${ingresos[i].monto.toLocaleString("es-CL")} `;
+
+    const btnEliminar = document.createElement("button");
+    btnEliminar.textContent = "Eliminar";
+    btnEliminar.addEventListener("click", function () {
+      ingresos.splice(i, 1);
+      renderAll();
+    });
+
+    li.appendChild(btnEliminar);
+    listaIngresos.appendChild(li);
+  }
+
+  const totalIngresosEl = document.getElementById("total-ingresos");
+  totalIngresosEl.textContent = `Total ingresos: $${totalIngresos.toLocaleString("es-CL")}`;
+
+  // --- Balance ---
+  const balanceEl = document.getElementById("balance");
+
+  if (balance > 0) {
+    balanceEl.textContent = `Balance: +$${balance.toLocaleString("es-CL")}`;
+    balanceEl.className = "balance-positivo";
+  } else if (balance < 0) {
+    balanceEl.textContent = `Balance: -$${Math.abs(balance).toLocaleString("es-CL")}`;
+    balanceEl.className = "balance-negativo";
+  } else {
+    balanceEl.textContent = `Balance: $0`;
+    balanceEl.className = "balance-cero";
+  }
+
+  // --- Renderizar gastos ---
+  const listaGastos = document.getElementById("lista-gastos");
+  listaGastos.innerHTML = "";
+
+  for (let i = 0; i < gastos.length; i++) {
+    const li = document.createElement("li");
+    li.textContent = `${gastos[i].nombre} - $${gastos[i].monto.toLocaleString("es-CL")} `;
+
+    const btnEliminar = document.createElement("button");
+    btnEliminar.textContent = "Eliminar";
+    btnEliminar.addEventListener("click", function () {
+      gastos.splice(i, 1);
+      renderAll();
+    });
+
+    li.appendChild(btnEliminar);
+    listaGastos.appendChild(li);
+  }
+
+  const totalGastosEl = document.getElementById("total-gastos");
+  totalGastosEl.textContent = `Total gastos: $${totalGastos.toLocaleString("es-CL")}`;
+
+  // --- Renderizar deudas ---
+  const listaDeudas = document.getElementById("lista-deudas");
+  listaDeudas.innerHTML = "";
+
+  for (let i = 0; i < deudas.length; i++) {
+    const li = document.createElement("li");
+    li.textContent = `${deudas[i].nombre} - $${deudas[i].monto.toLocaleString("es-CL")} (${deudas[i].estado}) `;
+
+    const btnEliminar = document.createElement("button");
+    btnEliminar.textContent = "Eliminar";
+    btnEliminar.addEventListener("click", function () {
+      deudas.splice(i, 1);
+      renderAll();
+    });
+
+    li.appendChild(btnEliminar);
+    listaDeudas.appendChild(li);
+  }
+
+  const totalDeudasEl = document.getElementById("total-deudas");
+  totalDeudasEl.textContent = `Total deudas: $${totalDeudas.toLocaleString("es-CL")}`;
 }
 
-let totalIngresos = 0;
-
-for (const ingreso of ingresos) {
-  totalIngresos = totalIngresos + ingreso.monto;
-}
-
-const balance = totalIngresos - totalGastos;
-
-let totalDeudas = 0;
-
-for (const deuda of deudas) {
-  totalDeudas = totalDeudas + deuda.monto;
-}
-
-console.log("Ingresos:", ingresos);
-console.log("Gastos:", gastos);
-console.log("Deudas:", deudas);
-console.log("Total de gastos:", totalGastos);
-console.log("Total de ingresos:", totalIngresos);
-console.log("Balance:", balance);
-console.log("Total de deudas:", totalDeudas);
-
-// --- Renderizar ingresos ---
-const listaIngresos = document.getElementById("lista-ingresos");
-
-for (const ingreso of ingresos) {
-  const li = document.createElement("li");
-  li.textContent = `${ingreso.nombre} - $${ingreso.monto.toLocaleString("es-CL")}`;
-  listaIngresos.appendChild(li);
-}
-
-const totalIngresosEl = document.getElementById("total-ingresos");
-totalIngresosEl.textContent = `Total ingresos: $${totalIngresos.toLocaleString("es-CL")}`;
-
-const balanceEl = document.getElementById("balance");
-
-if (balance > 0) {
-  balanceEl.textContent = `Balance: +$${balance.toLocaleString("es-CL")}`;
-  balanceEl.className = "balance-positivo";
-} else if (balance < 0) {
-  balanceEl.textContent = `Balance: -$${Math.abs(balance).toLocaleString("es-CL")}`;
-  balanceEl.className = "balance-negativo";
-} else {
-  balanceEl.textContent = `Balance: $0`;
-  balanceEl.className = "balance-cero";
-}
-
-// --- Renderizar gastos ---
-const listaGastos = document.getElementById("lista-gastos");
-
-for (const gasto of gastos) {
-  const li = document.createElement("li");
-  li.textContent = `${gasto.nombre} - $${gasto.monto.toLocaleString("es-CL")}`;
-  listaGastos.appendChild(li);
-}
-
-// --- Mostrar total de gastos ---
-const totalGastosEl = document.getElementById("total-gastos");
-totalGastosEl.textContent = `Total gastos: $${totalGastos.toLocaleString("es-CL")}`;
-
-// --- Renderizar deudas ---
-const listaDeudas = document.getElementById("lista-deudas");
-
-for (const deuda of deudas) {
-  const li = document.createElement("li");
-  li.textContent = `${deuda.nombre} - $${deuda.monto.toLocaleString("es-CL")} (${deuda.estado})`;
-  listaDeudas.appendChild(li);
-}
-
-const totalDeudasEl = document.getElementById("total-deudas");
-totalDeudasEl.textContent = `Total deudas: $${totalDeudas.toLocaleString("es-CL")}`;
+renderAll();

@@ -84,13 +84,65 @@ Durante este dia se realizo:
 - Mejora visual de las listas usando `::marker`.
 - Separacion mas clara entre estructura HTML y presentacion visual con CSS.
 
+## Avance del dia 7
+
+Durante el septimo dia se paso de tener datos estaticos en HTML a generarlos dinamicamente desde JavaScript.
+
+Durante este dia se realizo:
+
+- Creacion de arrays con objetos para representar ingresos y gastos.
+- Uso de `document.getElementById()` para seleccionar elementos del DOM.
+- Creacion de elementos `<li>` con `document.createElement()`.
+- Insercion de elementos en el DOM con `appendChild()`.
+- Renderizado dinamico de listas de ingresos y gastos desde JavaScript.
+- Mostrar el total de gastos calculado desde el array.
+- Primer contacto con la separacion entre datos (JS) y presentacion (HTML).
+
+## Avance del dia 8
+
+Durante el octavo dia se agrego el calculo y la visualizacion del balance financiero.
+
+Durante este dia se realizo:
+
+- Calculo del total de ingresos usando un bucle `for...of`.
+- Calculo del balance como la diferencia entre ingresos y gastos.
+- Visualizacion del balance en el DOM con formato de moneda chilena (`toLocaleString("es-CL")`).
+- Estilos condicionales segun el valor del balance: positivo (verde), negativo (rojo) o cero (gris).
+- Uso de `className` para cambiar la clase CSS desde JavaScript.
+
+## Avance del dia 9
+
+Durante el noveno dia se completo la representacion de datos transformando las deudas a objetos y mostrando sus totales.
+
+Durante este dia se realizo:
+
+- Conversion de la lista de deudas a un array de objetos con propiedades `nombre`, `monto` y `estado`.
+- Calculo del total de deudas usando un bucle `for...of`.
+- Renderizado de las deudas en el DOM incluyendo el estado de cada una (Al dia, Pagando, Atrasado).
+- Visualizacion del total de deudas debajo de la lista.
+
+## Avance del dia 10
+
+Durante el decimo dia se agrego interactividad a las listas con botones para eliminar elementos y se refactorizo el codigo para hacerlo reutilizable.
+
+Durante este dia se realizo:
+
+- Creacion de la funcion `renderAll()` que centraliza todo el calculo y renderizado del proyecto.
+- Uso de `innerHTML = ""` para limpiar las listas antes de volver a pintarlas.
+- Cambio de `for...of` a `for` con indice (`for let i = 0; i < array.length; i++`) para conocer la posicion de cada elemento.
+- Creacion de botones "Eliminar" desde JavaScript con `createElement()` y `textContent`.
+- Uso de `addEventListener("click", function() {...})` para detectar clics en los botones.
+- Eliminacion de elementos del array con `splice(i, 1)` al hacer clic en "Eliminar".
+- Llamada a `renderAll()` dentro del evento para refrescar la pantalla automaticamente.
+- Estilos visuales para el boton Eliminar (color rojo, esquinas redondeadas, efecto hover).
+
 ## Objetivo
 
 Construir una aplicacion para organizar ingresos, gastos y deudas familiares, aprendiendo paso a paso HTML, CSS, JavaScript, Git, GitHub y tecnologias Full Stack.
 
 ## Estado actual
 
-Dia 6 de aprendizaje.
+Dia 10 de aprendizaje.
 
 Actualmente el proyecto tiene:
 
@@ -98,11 +150,16 @@ Actualmente el proyecto tiene:
 - configuracion basica para caracteres,
 - configuracion responsive inicial,
 - secciones para ingresos, gastos y deudas,
-- listas iniciales de datos financieros,
+- datos financieros representados como arrays de objetos en JavaScript,
 - hoja de estilos externa,
-- archivo JavaScript inicial conectado,
+- archivo JavaScript con logica completa conectado,
 - layout visual con tarjetas,
-- grilla responsive con CSS Grid.
+- grilla responsive con CSS Grid,
+- renderizado dinamico de listas desde JavaScript,
+- calculo automatico de totales y balance financiero,
+- colores de balance segun estado (positivo, negativo, cero),
+- botones "Eliminar" en cada elemento de las listas,
+- funcion centralizada `renderAll()` que refresca todo automaticamente.
 
 ## Tecnologias utilizadas
 
@@ -114,7 +171,8 @@ Actualmente el proyecto tiene:
 
 ## Proximos pasos
 
-- Mejorar la apariencia general de la aplicacion.
-- Agregar datos simulados con JavaScript moderno.
-- Representar ingresos, gastos y deudas usando arrays y objetos.
-- Renderizar informacion financiera desde JavaScript.
+- Agregar formularios para añadir nuevos ingresos, gastos y deudas desde la interfaz.
+- Guardar los datos en localStorage para que persistan al recargar la pagina.
+- Agregar confirmacion antes de eliminar elementos.
+- Mejorar la apariencia general de la aplicacion con mas estilos visuales.
+- Agregar una seccion de historial o registro de cambios.

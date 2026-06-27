@@ -28,6 +28,21 @@
         <ul id="lista-gastos"></ul>
         <p id="total-gastos"></p>
         <p id="balance"></p>
+
+        <form id="form-gasto" class="form-agregar">
+          <h3>Agregar gasto</h3>
+          <input type="text" id="input-nombre-gasto" placeholder="Nombre del gasto" required>
+          <input type="number" id="input-monto-gasto" placeholder="Monto en $" required>
+          <select id="input-categoria-gasto" required>
+            <option value="">Selecciona categoria</option>
+            <option value="Vivienda">Vivienda</option>
+            <option value="Servicios">Servicios</option>
+            <option value="Alimentacion">Alimentacion</option>
+            <option value="Transporte">Transporte</option>
+            <option value="Otros">Otros</option>
+          </select>
+          <button type="submit">Agregar</button>
+        </form>
       </section>
 
       <section class="card">

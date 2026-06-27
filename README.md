@@ -136,13 +136,30 @@ Durante este dia se realizo:
 - Llamada a `renderAll()` dentro del evento para refrescar la pantalla automaticamente.
 - Estilos visuales para el boton Eliminar (color rojo, esquinas redondeadas, efecto hover).
 
+## Avance del dia 11
+
+Durante el undecimo dia se agrego el primer formulario funcional del proyecto.
+
+Durante este dia se realizo:
+
+- Creacion de un formulario HTML para agregar nuevos gastos.
+- Uso de campos `input` para capturar nombre y monto del gasto.
+- Uso de `select` para elegir la categoria del gasto.
+- Captura del evento `submit` con JavaScript.
+- Uso de `preventDefault()` para evitar que la pagina se recargue al enviar el formulario.
+- Lectura de valores desde inputs con `getElementById().value`.
+- Conversion del monto ingresado a numero usando `Number()`.
+- Agregado de nuevos gastos al array con `push()`.
+- Limpieza del formulario con `reset()`.
+- Actualizacion automatica de la interfaz llamando nuevamente a `renderAll()`.
+
 ## Objetivo
 
 Construir una aplicacion para organizar ingresos, gastos y deudas familiares, aprendiendo paso a paso HTML, CSS, JavaScript, Git, GitHub y tecnologias Full Stack.
 
 ## Estado actual
 
-Dia 10 de aprendizaje.
+Dia 11 de aprendizaje.
 
 Actualmente el proyecto tiene:
 
@@ -159,7 +176,8 @@ Actualmente el proyecto tiene:
 - calculo automatico de totales y balance financiero,
 - colores de balance segun estado (positivo, negativo, cero),
 - botones "Eliminar" en cada elemento de las listas,
-- funcion centralizada `renderAll()` que refresca todo automaticamente.
+- funcion centralizada `renderAll()` que refresca todo automaticamente,
+- formulario funcional para agregar nuevos gastos desde la interfaz.
 
 ## Tecnologias utilizadas
 
@@ -171,7 +189,7 @@ Actualmente el proyecto tiene:
 
 ## Proximos pasos
 
-- Agregar formularios para añadir nuevos ingresos, gastos y deudas desde la interfaz.
+- Agregar formularios para anadir nuevos ingresos y deudas desde la interfaz.
 - Guardar los datos en localStorage para que persistan al recargar la pagina.
 - Agregar confirmacion antes de eliminar elementos.
 - Mejorar la apariencia general de la aplicacion con mas estilos visuales.

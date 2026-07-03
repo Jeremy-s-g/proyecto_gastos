@@ -148,8 +148,20 @@ document.getElementById("form-gasto").addEventListener("submit", function (e) {
   const monto = Number(document.getElementById("input-monto-gasto").value);
   const categoria = document.getElementById("input-categoria-gasto").value;
 
-  if (!nombre || !monto || !categoria) return;
+  if (!nombre) {
+    console.log("El nombre del gasto es obligatorio.");
+    return;
+  }
 
+  if (monto <= 0) {
+    console.log("El monto debe ser mayor que cero.");
+    return;
+  }
+
+  if (!categoria) {
+    console.log("La categoria es obligatoria.");
+    return;
+  }
   gastos.push({ nombre, monto, categoria });
 
   this.reset();

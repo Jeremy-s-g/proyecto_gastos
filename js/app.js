@@ -90,10 +90,10 @@ function renderAll() {
   const balanceEl = document.getElementById("balance");
 
   if (balance > 0) {
-    balanceEl.textContent = `Balance: +$${balance.toLocaleString("es-CL")}`;
+    balanceEl.textContent = `Balance: +${formatearMoneda(balance)}`;
     balanceEl.className = "balance-positivo";
   } else if (balance < 0) {
-    balanceEl.textContent = `Balance: -$${Math.abs(balance).toLocaleString("es-CL")}`;
+    balanceEl.textContent = `Balance: -${formatearMoneda(Math.abs(balance))}`;
     balanceEl.className = "balance-negativo";
   } else {
     balanceEl.textContent = `Balance: $0`;
@@ -142,7 +142,7 @@ function renderAll() {
   }
 
   const totalDeudasEl = document.getElementById("total-deudas");
-  totalDeudasEl.textContent = `Total deudas: $${totalDeudas.toLocaleString("es-CL")}`;
+  totalDeudasEl.textContent = `Total deudas: ${formatearMoneda(totalDeudas)}`;
 }
 
 document.getElementById("form-gasto").addEventListener("submit", function (e) {

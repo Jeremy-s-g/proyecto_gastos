@@ -29,6 +29,11 @@ const gastos = [
     nombre: "Supermercado",
     monto: 180000,
     categoria: "Alimentacion"
+  },
+  {
+    nombre: "Seguro medico",
+    monto: 45000,
+    categoria: "Otros"
   }
 ];
 

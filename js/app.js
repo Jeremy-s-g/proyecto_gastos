@@ -38,6 +38,10 @@ const deudas = [
   { nombre: "Compra en cuotas", monto: 120000, estado: "Al dia" }
 ];
 
+function formatearMoneda(monto) {
+  return `$${monto.toLocaleString("es-CL")}`;
+}
+
 function renderAll() {
   // --- Calcular totales desde los arrays ---
   let totalGastos = 0;
@@ -80,7 +84,7 @@ function renderAll() {
   }
 
   const totalIngresosEl = document.getElementById("total-ingresos");
-  totalIngresosEl.textContent = `Total ingresos: $${totalIngresos.toLocaleString("es-CL")}`;
+  totalIngresosEl.textContent = `Total ingresos: ${formatearMoneda(totalIngresos)}`;
 
   // --- Balance ---
   const balanceEl = document.getElementById("balance");
@@ -116,7 +120,7 @@ function renderAll() {
   }
 
   const totalGastosEl = document.getElementById("total-gastos");
-  totalGastosEl.textContent = `Total gastos: $${totalGastos.toLocaleString("es-CL")}`;
+  totalGastosEl.textContent = `Total gastos: ${formatearMoneda(totalGastos)}`;
 
   // --- Renderizar deudas ---
   const listaDeudas = document.getElementById("lista-deudas");
@@ -162,6 +166,7 @@ document.getElementById("form-gasto").addEventListener("submit", function (e) {
     console.log("La categoria es obligatoria.");
     return;
   }
+
   gastos.push({ nombre, monto, categoria });
 
   this.reset();

@@ -47,27 +47,19 @@ function formatearMoneda(monto) {
   return `$${monto.toLocaleString("es-CL")}`;
 }
 
+function calcularTotal(array) {
+  let suma = 0;
+  for (const item of array) {
+    suma = suma + item.monto;
+  }
+  return suma;
+}
+
 function renderAll() {
-  // --- Calcular totales desde los arrays ---
-  let totalGastos = 0;
-
-  for (const gasto of gastos) {
-    totalGastos = totalGastos + gasto.monto;
-  }
-
-  let totalIngresos = 0;
-
-  for (const ingreso of ingresos) {
-    totalIngresos = totalIngresos + ingreso.monto;
-  }
-
+  const totalGastos = calcularTotal(gastos);
+  const totalIngresos = calcularTotal(ingresos);
+  const totalDeudas = calcularTotal(deudas);
   const balance = totalIngresos - totalGastos;
-
-  let totalDeudas = 0;
-
-  for (const deuda of deudas) {
-    totalDeudas = totalDeudas + deuda.monto;
-  }
 
   // --- Renderizar ingresos ---
   const listaIngresos = document.getElementById("lista-ingresos");
@@ -75,7 +67,7 @@ function renderAll() {
 
   for (let i = 0; i < ingresos.length; i++) {
     const li = document.createElement("li");
-    li.textContent = `${ingresos[i].nombre} - $${ingresos[i].monto.toLocaleString("es-CL")} `;
+    li.textContent = `${ingresos[i].nombre} - ${formatearMoneda(ingresos[i].monto)} `;
 
     const btnEliminar = document.createElement("button");
     btnEliminar.textContent = "Eliminar";
@@ -111,7 +103,7 @@ function renderAll() {
 
   for (let i = 0; i < gastos.length; i++) {
     const li = document.createElement("li");
-    li.textContent = `${gastos[i].nombre} - $${gastos[i].monto.toLocaleString("es-CL")} `;
+    li.textContent = `${gastos[i].nombre} - ${formatearMoneda(gastos[i].monto)} `;
 
     const btnEliminar = document.createElement("button");
     btnEliminar.textContent = "Eliminar";
@@ -133,7 +125,7 @@ function renderAll() {
 
   for (let i = 0; i < deudas.length; i++) {
     const li = document.createElement("li");
-    li.textContent = `${deudas[i].nombre} - $${deudas[i].monto.toLocaleString("es-CL")} (${deudas[i].estado}) `;
+    li.textContent = `${deudas[i].nombre} - ${formatearMoneda(deudas[i].monto)} (${deudas[i].estado}) `;
 
     const btnEliminar = document.createElement("button");
     btnEliminar.textContent = "Eliminar";

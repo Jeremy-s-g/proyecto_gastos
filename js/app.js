@@ -170,4 +170,26 @@ document.getElementById("form-gasto").addEventListener("submit", function (e) {
   renderAll();
 });
 
+document.getElementById("form-ingreso").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const nombre = document.getElementById("input-nombre-ingreso").value.trim();
+  const monto = Number(document.getElementById("input-monto-ingreso").value);
+
+  if (!nombre) {
+    console.log("El nombre del ingreso es obligatorio.");
+    return;
+  }
+
+  if (monto <= 0) {
+    console.log("El monto debe ser mayor que cero.");
+    return;
+  }
+
+  ingresos.push({ nombre, monto });
+
+  this.reset();
+  renderAll();
+});
+
 renderAll();

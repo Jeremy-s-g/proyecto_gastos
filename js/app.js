@@ -1,47 +1,42 @@
-const ingresos = [
-  { nombre: "Sueldo principal", monto: 800000 },
-  { nombre: "Sueldo secundario", monto: 400000 },
-  { nombre: "Ingreso adicional", monto: 100000 }
-];
+let ingresos = [];
+let gastos = [];
+let deudas = [];
 
-const gastos = [
-  {
-    nombre: "Arriendo",
-    monto: 350000,
-    categoria: "Vivienda"
-  },
-  {
-    nombre: "Luz",
-    monto: 25000,
-    categoria: "Servicios"
-  },
-  {
-    nombre: "Agua",
-    monto: 18000,
-    categoria: "Servicios"
-  },
-  {
-    nombre: "Internet",
-    monto: 30000,
-    categoria: "Servicios"
-  },
-  {
-    nombre: "Supermercado",
-    monto: 180000,
-    categoria: "Alimentacion"
-  },
-  {
-    nombre: "Seguro medico",
-    monto: 45000,
-    categoria: "Otros"
+function cargarDatos() {
+  const datosGuardados = localStorage.getItem("datos");
+
+  if (datosGuardados) {
+    const datos = JSON.parse(datosGuardados);
+    ingresos = datos.ingresos;
+    gastos = datos.gastos;
+    deudas = datos.deudas;
+  } else {
+    ingresos = [
+      { nombre: "Sueldo principal", monto: 800000 },
+      { nombre: "Sueldo secundario", monto: 400000 },
+      { nombre: "Ingreso adicional", monto: 100000 }
+    ];
+
+    gastos = [
+      { nombre: "Arriendo", monto: 350000, categoria: "Vivienda" },
+      { nombre: "Luz", monto: 25000, categoria: "Servicios" },
+      { nombre: "Agua", monto: 18000, categoria: "Servicios" },
+      { nombre: "Internet", monto: 30000, categoria: "Servicios" },
+      { nombre: "Supermercado", monto: 180000, categoria: "Alimentacion" },
+      { nombre: "Seguro medico", monto: 45000, categoria: "Otros" }
+    ];
+
+    deudas = [
+      { nombre: "Tarjeta de credito", monto: 200000, estado: "Pagando" },
+      { nombre: "Credito de consumo", monto: 500000, estado: "Atrasado" },
+      { nombre: "Compra en cuotas", monto: 120000, estado: "Al dia" }
+    ];
   }
-];
+}
 
-const deudas = [
-  { nombre: "Tarjeta de credito", monto: 200000, estado: "Pagando" },
-  { nombre: "Credito de consumo", monto: 500000, estado: "Atrasado" },
-  { nombre: "Compra en cuotas", monto: 120000, estado: "Al dia" }
-];
+function guardarDatos() {
+  localStorage.setItem("datos", JSON.stringify({ ingresos, gastos, deudas }));
+}
 
 function formatearMoneda(monto) {
   return `$${monto.toLocaleString("es-CL")}`;
@@ -150,6 +145,8 @@ function renderAll() {
 
   const totalDeudasEl = document.getElementById("total-deudas");
   totalDeudasEl.textContent = `Total deudas: ${formatearMoneda(totalDeudas)}`;
+
+  guardarDatos();
 }
 
 document.getElementById("form-gasto").addEventListener("submit", function (e) {
@@ -236,4 +233,5 @@ document.getElementById("form-deuda").addEventListener("submit", function (e) {
   renderAll();
 });
 
+cargarDatos();
 renderAll();

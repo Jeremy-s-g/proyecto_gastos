@@ -72,8 +72,10 @@ function renderAll() {
     const btnEliminar = document.createElement("button");
     btnEliminar.textContent = "Eliminar";
     btnEliminar.addEventListener("click", function () {
-      ingresos.splice(i, 1);
-      renderAll();
+      if (confirm(`¿Eliminar ${ingresos[i].nombre}?`)) {
+        ingresos.splice(i, 1);
+        renderAll();
+      }
     });
 
     li.appendChild(btnEliminar);
@@ -108,8 +110,10 @@ function renderAll() {
     const btnEliminar = document.createElement("button");
     btnEliminar.textContent = "Eliminar";
     btnEliminar.addEventListener("click", function () {
-      gastos.splice(i, 1);
-      renderAll();
+      if (confirm(`¿Eliminar ${gastos[i].nombre}?`)) {
+        gastos.splice(i, 1);
+        renderAll();
+      }
     });
 
     li.appendChild(btnEliminar);
@@ -130,8 +134,10 @@ function renderAll() {
     const btnEliminar = document.createElement("button");
     btnEliminar.textContent = "Eliminar";
     btnEliminar.addEventListener("click", function () {
-      deudas.splice(i, 1);
-      renderAll();
+      if (confirm(`¿Eliminar ${deudas[i].nombre}?`)) {
+        deudas.splice(i, 1);
+        renderAll();
+      }
     });
 
     li.appendChild(btnEliminar);
@@ -187,6 +193,34 @@ document.getElementById("form-ingreso").addEventListener("submit", function (e) 
   }
 
   ingresos.push({ nombre, monto });
+
+  this.reset();
+  renderAll();
+});
+
+document.getElementById("form-deuda").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const nombre = document.getElementById("input-nombre-deuda").value.trim();
+  const monto = Number(document.getElementById("input-monto-deuda").value);
+  const estado = document.getElementById("input-estado-deuda").value;
+
+  if (!nombre) {
+    console.log("El nombre de la deuda es obligatorio.");
+    return;
+  }
+
+  if (monto <= 0) {
+    console.log("El monto debe ser mayor que cero.");
+    return;
+  }
+
+  if (!estado) {
+    console.log("El estado es obligatorio.");
+    return;
+  }
+
+  deudas.push({ nombre, monto, estado });
 
   this.reset();
   renderAll();

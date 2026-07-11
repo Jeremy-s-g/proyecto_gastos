@@ -58,6 +58,19 @@
 
         <ul id="lista-deudas"></ul>
         <p id="total-deudas"></p>
+
+        <form id="form-deuda" class="form-agregar">
+          <h3>Agregar deuda</h3>
+          <input type="text" id="input-nombre-deuda" placeholder="Nombre de la deuda" required>
+          <input type="number" id="input-monto-deuda" placeholder="Monto en $" required>
+          <select id="input-estado-deuda" required>
+            <option value="">Selecciona estado</option>
+            <option value="Al dia">Al dia</option>
+            <option value="Pagando">Pagando</option>
+            <option value="Atrasado">Atrasado</option>
+          </select>
+          <button type="submit">Agregar</button>
+        </form>
       </section>
     </main>
 

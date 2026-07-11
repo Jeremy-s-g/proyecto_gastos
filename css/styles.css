@@ -146,3 +146,11 @@ ul {
 .form-agregar button:hover {
   background-color: #276749;
 }
+
+.mensaje-error {
+  width: 100%;
+  margin: 4px 0;
+  color: #c53030;
+  font-size: 0.85rem;
+  font-weight: bold;
+}

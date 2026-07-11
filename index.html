@@ -24,6 +24,7 @@
           <h3>Agregar ingreso</h3>
           <input type="text" id="input-nombre-ingreso" placeholder="Nombre del ingreso" required>
           <input type="number" id="input-monto-ingreso" placeholder="Monto en $" required>
+          <p class="mensaje-error" id="error-ingreso"></p>
           <button type="submit">Agregar</button>
         </form>
       </section>
@@ -48,6 +49,7 @@
             <option value="Transporte">Transporte</option>
             <option value="Otros">Otros</option>
           </select>
+          <p class="mensaje-error" id="error-gasto"></p>
           <button type="submit">Agregar</button>
         </form>
       </section>
@@ -69,6 +71,7 @@
             <option value="Pagando">Pagando</option>
             <option value="Atrasado">Atrasado</option>
           </select>
+          <p class="mensaje-error" id="error-deuda"></p>
           <button type="submit">Agregar</button>
         </form>
       </section>

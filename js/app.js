@@ -55,6 +55,10 @@ function calcularTotal(array) {
   return suma;
 }
 
+function mostrarError(id, mensaje) {
+  document.getElementById(id).textContent = mensaje;
+}
+
 function renderAll() {
   const totalGastos = calcularTotal(gastos);
   const totalIngresos = calcularTotal(ingresos);
@@ -151,22 +155,24 @@ function renderAll() {
 document.getElementById("form-gasto").addEventListener("submit", function (e) {
   e.preventDefault();
 
+  mostrarError("error-gasto", "");
+
   const nombre = document.getElementById("input-nombre-gasto").value.trim();
   const monto = Number(document.getElementById("input-monto-gasto").value);
   const categoria = document.getElementById("input-categoria-gasto").value;
 
   if (!nombre) {
-    console.log("El nombre del gasto es obligatorio.");
+    mostrarError("error-gasto", "El nombre del gasto es obligatorio.");
     return;
   }
 
   if (monto <= 0) {
-    console.log("El monto debe ser mayor que cero.");
+    mostrarError("error-gasto", "El monto debe ser mayor que cero.");
     return;
   }
 
   if (!categoria) {
-    console.log("La categoria es obligatoria.");
+    mostrarError("error-gasto", "La categoria es obligatoria.");
     return;
   }
 
@@ -179,16 +185,18 @@ document.getElementById("form-gasto").addEventListener("submit", function (e) {
 document.getElementById("form-ingreso").addEventListener("submit", function (e) {
   e.preventDefault();
 
+  mostrarError("error-ingreso", "");
+
   const nombre = document.getElementById("input-nombre-ingreso").value.trim();
   const monto = Number(document.getElementById("input-monto-ingreso").value);
 
   if (!nombre) {
-    console.log("El nombre del ingreso es obligatorio.");
+    mostrarError("error-ingreso", "El nombre del ingreso es obligatorio.");
     return;
   }
 
   if (monto <= 0) {
-    console.log("El monto debe ser mayor que cero.");
+    mostrarError("error-ingreso", "El monto debe ser mayor que cero.");
     return;
   }
 
@@ -201,22 +209,24 @@ document.getElementById("form-ingreso").addEventListener("submit", function (e) 
 document.getElementById("form-deuda").addEventListener("submit", function (e) {
   e.preventDefault();
 
+  mostrarError("error-deuda", "");
+
   const nombre = document.getElementById("input-nombre-deuda").value.trim();
   const monto = Number(document.getElementById("input-monto-deuda").value);
   const estado = document.getElementById("input-estado-deuda").value;
 
   if (!nombre) {
-    console.log("El nombre de la deuda es obligatorio.");
+    mostrarError("error-deuda", "El nombre de la deuda es obligatorio.");
     return;
   }
 
   if (monto <= 0) {
-    console.log("El monto debe ser mayor que cero.");
+    mostrarError("error-deuda", "El monto debe ser mayor que cero.");
     return;
   }
 
   if (!estado) {
-    console.log("El estado es obligatorio.");
+    mostrarError("error-deuda", "El estado es obligatorio.");
     return;
   }
 

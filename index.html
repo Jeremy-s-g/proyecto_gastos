@@ -3,82 +3,151 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gastos Familiares</title>
+    <title>Gastos Familiares - Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
   </head>
   <body>
-    <header>
-      <h1>Gastos Familiares</h1>
-      <p>Aplicacion para organizar ingresos, gastos y deudas del hogar.</p>
+    <header class="topbar">
+      <div class="brand">
+        <span class="material-symbols-outlined brand-icon">account_balance</span>
+        <h1>Gastos Familiares</h1>
+      </div>
+
+      <div class="topbar-actions">
+        <button class="icon-button" type="button" aria-label="Buscar">
+          <span class="material-symbols-outlined">search</span>
+        </button>
+        <img class="avatar" src="assets/advisor-profile.jpg" alt="Perfil financiero familiar">
+      </div>
     </header>
 
-    <main class="dashboard">
-      <section class="card">
-        <h2>Ingresos familiares</h2>
-        <p>Aqui registraremos los sueldos o ingresos de cada integrante.</p>
-
-        <ul id="lista-ingresos"></ul>
-        <p id="total-ingresos"></p>
-
-        <form id="form-ingreso" class="form-agregar">
-          <h3>Agregar ingreso</h3>
-          <input type="text" id="input-nombre-ingreso" placeholder="Nombre del ingreso" required>
-          <input type="number" id="input-monto-ingreso" placeholder="Monto en $" required>
-          <p class="mensaje-error" id="error-ingreso"></p>
-          <button type="submit">Agregar</button>
-        </form>
+    <main class="page-shell">
+      <section class="balance-hero" aria-labelledby="balance-titulo">
+        <span class="eyebrow" id="balance-titulo">Balance Total</span>
+        <div class="balance-line">
+          <strong id="balance-total">$0</strong>
+          <span class="material-symbols-outlined" id="balance-icon">trending_flat</span>
+        </div>
+        <div class="hero-metrics">
+          <div class="metric">
+            <span>Este Mes</span>
+            <strong id="balance-trend">0%</strong>
+          </div>
+          <div class="metric">
+            <span>Meta Ahorro</span>
+            <strong id="balance-goal">0%</strong>
+          </div>
+        </div>
       </section>
 
-      <section class="card">
-        <h2>Gastos mensuales</h2>
-        <p>Aqui organizaremos los pagos habituales del hogar.</p>
+      <section class="dashboard" aria-label="Resumen financiero familiar">
+        <article class="finance-card">
+          <div class="card-header">
+            <h2>Ingresos</h2>
+            <span class="material-symbols-outlined positive">payments</span>
+          </div>
 
-        <ul id="lista-gastos"></ul>
-        <p id="total-gastos"></p>
-        <p id="balance"></p>
+          <div class="item-list" id="lista-ingresos"></div>
 
-        <form id="form-gasto" class="form-agregar">
-          <h3>Agregar gasto</h3>
-          <input type="text" id="input-nombre-gasto" placeholder="Nombre del gasto" required>
-          <input type="number" id="input-monto-gasto" placeholder="Monto en $" required>
-          <select id="input-categoria-gasto" required>
-            <option value="">Selecciona categoria</option>
-            <option value="Vivienda">Vivienda</option>
-            <option value="Servicios">Servicios</option>
-            <option value="Alimentacion">Alimentacion</option>
-            <option value="Transporte">Transporte</option>
-            <option value="Otros">Otros</option>
-          </select>
-          <p class="mensaje-error" id="error-gasto"></p>
-          <button type="submit">Agregar</button>
-        </form>
+          <div class="card-footer">
+            <div class="total-row">
+              <span>Total Ingresos</span>
+              <strong class="positive" id="total-ingresos">$0</strong>
+            </div>
+            <form id="form-ingreso" class="compact-form">
+              <div class="form-grid">
+                <input type="text" id="input-nombre-ingreso" placeholder="Nombre" required>
+                <input type="number" id="input-monto-ingreso" placeholder="Monto" required>
+              </div>
+              <p class="mensaje-error" id="error-ingreso"></p>
+              <button type="submit">Agregar</button>
+            </form>
+          </div>
+        </article>
+
+        <article class="finance-card">
+          <div class="card-header">
+            <h2>Gastos</h2>
+            <span class="material-symbols-outlined negative">shopping_cart</span>
+          </div>
+
+          <div class="item-list" id="lista-gastos"></div>
+
+          <div class="card-footer">
+            <div class="total-row">
+              <span>Total Gastos</span>
+              <strong class="negative" id="total-gastos">$0</strong>
+            </div>
+            <form id="form-gasto" class="compact-form">
+              <div class="form-grid">
+                <input type="text" id="input-nombre-gasto" placeholder="Gasto" required>
+                <input type="number" id="input-monto-gasto" placeholder="Monto" required>
+              </div>
+              <div class="form-grid form-grid-action">
+                <select id="input-categoria-gasto" required>
+                  <option value="">Categoria</option>
+                  <option value="Vivienda">Vivienda</option>
+                  <option value="Servicios">Servicios</option>
+                  <option value="Alimentacion">Alimentacion</option>
+                  <option value="Transporte">Transporte</option>
+                  <option value="Otros">Otros</option>
+                </select>
+                <button type="submit">OK</button>
+              </div>
+              <p class="mensaje-error" id="error-gasto"></p>
+            </form>
+          </div>
+        </article>
+
+        <article class="finance-card">
+          <div class="card-header">
+            <h2>Deudas</h2>
+            <span class="material-symbols-outlined muted">credit_card</span>
+          </div>
+
+          <div class="item-list" id="lista-deudas"></div>
+
+          <div class="card-footer">
+            <div class="total-row">
+              <span>Total Deuda</span>
+              <strong id="total-deudas">$0</strong>
+            </div>
+            <form id="form-deuda" class="compact-form">
+              <div class="form-grid">
+                <input type="text" id="input-nombre-deuda" placeholder="Entidad" required>
+                <input type="number" id="input-monto-deuda" placeholder="Monto" required>
+              </div>
+              <div class="form-grid form-grid-action">
+                <select id="input-estado-deuda" required>
+                  <option value="">Estado</option>
+                  <option value="Al dia">Al dia</option>
+                  <option value="Pagando">Pagando</option>
+                  <option value="Atrasado">Atrasado</option>
+                </select>
+                <button type="submit">Agregar</button>
+              </div>
+              <p class="mensaje-error" id="error-deuda"></p>
+            </form>
+          </div>
+        </article>
       </section>
 
-      <section class="card">
-        <h2>Deudas pendientes</h2>
-        <p>Aqui controlaremos cuotas, montos pendientes y estados de cada deuda.</p>
-
-        <ul id="lista-deudas"></ul>
-        <p id="total-deudas"></p>
-
-        <form id="form-deuda" class="form-agregar">
-          <h3>Agregar deuda</h3>
-          <input type="text" id="input-nombre-deuda" placeholder="Nombre de la deuda" required>
-          <input type="number" id="input-monto-deuda" placeholder="Monto en $" required>
-          <select id="input-estado-deuda" required>
-            <option value="">Selecciona estado</option>
-            <option value="Al dia">Al dia</option>
-            <option value="Pagando">Pagando</option>
-            <option value="Atrasado">Atrasado</option>
-          </select>
-          <p class="mensaje-error" id="error-deuda"></p>
-          <button type="submit">Agregar</button>
-        </form>
-      </section>
+      <div class="toast" id="interaction-overlay" role="status">Cambios guardados</div>
     </main>
 
-    <footer>
-      <p>Proyecto de aprendizaje Full Stack.</p>
+    <footer class="site-footer">
+      <div>
+        <strong>Gastos Familiares</strong>
+        <p>Gestion financiera para familias.</p>
+      </div>
+      <nav aria-label="Enlaces secundarios">
+        <a href="#">Privacidad</a>
+        <a href="#">Terminos</a>
+        <a href="#">Seguridad</a>
+      </nav>
     </footer>
 
     <script src="js/app.js"></script>

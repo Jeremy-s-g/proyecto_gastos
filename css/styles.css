@@ -1,22 +1,25 @@
 :root {
-  --background: #0e1511;
-  --surface: #0e1511;
-  --surface-lowest: #09100c;
-  --surface-low: #161d19;
-  --surface-container: #1a211d;
-  --surface-high: #242c27;
-  --surface-bright: #343b36;
-  --surface-variant: #2f3632;
-  --outline: #86948a;
-  --outline-variant: #3c4a42;
-  --text: #dde4dd;
-  --text-muted: #bbcabf;
-  --primary: #4edea3;
-  --primary-strong: #10b981;
-  --primary-ink: #003824;
-  --negative: #fc7c78;
-  --negative-soft: rgba(147, 0, 10, 0.2);
-  --shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+  --background: #f7fafc;
+  --surface: #f8f9ff;
+  --surface-lowest: #ffffff;
+  --surface-low: #eff4ff;
+  --surface-container: #e5eeff;
+  --surface-high: #dce9ff;
+  --surface-bright: #f8f9ff;
+  --surface-variant: #d4e4fc;
+  --hover-surface: #f7fafc;
+  --outline: #76777c;
+  --outline-variant: #c6c6cc;
+  --text: #2d3748;
+  --text-strong: #030813;
+  --text-muted: #45474c;
+  --primary: #2f855a;
+  --primary-strong: #1f6f47;
+  --primary-ink: #ffffff;
+  --negative: #c53030;
+  --negative-soft: #ffdad6;
+  --brand: #030813;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
 }
 
 * {
@@ -84,7 +87,7 @@ a {
 .topbar,
 .page-shell,
 .site-footer {
-  width: min(100%, 1280px);
+  width: min(100%, 1200px);
   margin-inline: auto;
   padding-inline: 32px;
 }
@@ -98,9 +101,10 @@ a {
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  background: rgba(14, 21, 17, 0.94);
+  background: rgba(248, 249, 255, 0.94);
   border-bottom: 1px solid var(--outline-variant);
   backdrop-filter: blur(16px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 .brand {
@@ -112,14 +116,14 @@ a {
 
 .brand h1 {
   margin: 0;
-  color: var(--text);
+  color: var(--brand);
   font-size: 32px;
   line-height: 40px;
   font-weight: 800;
 }
 
 .brand-icon {
-  color: var(--primary);
+  color: var(--brand);
   font-size: 32px;
 }
 
@@ -144,7 +148,7 @@ a {
 }
 
 .icon-button:hover {
-  color: var(--text);
+  color: var(--brand);
   background: var(--surface-low);
 }
 
@@ -154,7 +158,7 @@ a {
   border-radius: 999px;
   border: 1px solid var(--outline-variant);
   object-fit: cover;
-  background: var(--primary);
+  background: var(--surface-container);
 }
 
 .page-shell {
@@ -254,7 +258,7 @@ a {
   border: 1px solid var(--outline-variant);
   border-radius: 12px;
   background: var(--surface-lowest);
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.24);
+  box-shadow: var(--shadow);
 }
 
 .card-header {
@@ -264,7 +268,7 @@ a {
   gap: 16px;
   padding: 16px;
   border-bottom: 1px solid var(--outline-variant);
-  background: var(--surface-low);
+  background: rgba(239, 244, 255, 0.3);
 }
 
 .card-header h2 {
@@ -318,7 +322,7 @@ a {
 }
 
 .finance-item:hover {
-  background: var(--surface-variant);
+  background: var(--hover-surface);
 }
 
 .finance-item.removing {
@@ -341,7 +345,7 @@ a {
   place-items: center;
   border-radius: 6px;
   color: var(--text);
-  background: var(--surface-high);
+  background: var(--surface-container);
 }
 
 .item-icon .material-symbols-outlined {
@@ -448,7 +452,7 @@ a {
   margin-top: auto;
   padding: 16px;
   border-top: 2px solid var(--outline-variant);
-  background: var(--surface-low);
+  background: rgba(239, 244, 255, 0.2);
 }
 
 .total-row {
@@ -521,7 +525,7 @@ select:focus {
 }
 
 .compact-form button:hover {
-  background: #6ffbbe;
+  background: var(--primary-strong);
 }
 
 .compact-form button:active {
@@ -544,7 +548,7 @@ select:focus {
   border: 1px solid var(--outline-variant);
   border-radius: 999px;
   color: var(--text);
-  background: var(--surface-high);
+  background: var(--surface-lowest);
   box-shadow: var(--shadow);
   font-size: 12px;
   opacity: 0;

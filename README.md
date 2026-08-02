@@ -194,3 +194,35 @@ Actualmente el proyecto tiene:
 - Agregar confirmacion antes de eliminar elementos.
 - Mejorar la apariencia general de la aplicacion con mas estilos visuales.
 - Agregar una seccion de historial o registro de cambios.
+
+## Sesion de repaso de fundamentos
+
+Se decidio convertir el proyecto en un curso practico para reaprender programacion construyendo una aplicacion real.
+
+Durante esta sesion se repasaron los conceptos base que ya aparecen en el codigo:
+
+- objetos para representar entidades como gastos, ingresos y deudas;
+- arrays para manejar listas de datos;
+- acceso a datos con indices y propiedades;
+- funciones, parametros y valores de retorno;
+- condicionales para validar y tomar decisiones;
+- bucles para recorrer listas;
+- DOM para leer y modificar elementos HTML desde JavaScript;
+- eventos como `submit` y `click`;
+- formularios, `.value`, `preventDefault()` y `Number()`;
+- renderizado como flujo de datos hacia la pantalla;
+- `localStorage`, `setItem()`, `getItem()`, `JSON.stringify()` y `JSON.parse()`;
+- separacion de responsabilidades entre HTML, CSS y JavaScript;
+- CSS responsive con Grid y reglas `@media`.
+
+Conceptos a reforzar:
+
+- diferencia entre string y number;
+- orden correcto del flujo al agregar datos;
+- rol de `getItem()` al iniciar la app y `setItem()` despues de modificar datos;
+- CSS Grid y media queries con mas practica;
+- renderizado como consecuencia de cambios en los arrays.
+
+Proximo objetivo practico:
+
+- realizar un cambio pequeno por mi cuenta, revisarlo con calma y guardarlo con Git.

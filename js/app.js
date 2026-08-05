@@ -167,6 +167,11 @@ function renderGastos() {
     icon.innerHTML = `<span class="material-symbols-outlined">${categoriaIcono(gasto.categoria)}</span>`;
     copy.appendChild(crearElemento("strong", "", gasto.nombre));
     copy.appendChild(crearElemento("span", "", gasto.categoria));
+
+    if (gasto.fecha) {
+      copy.appendChild(crearElemento("span", "", `Fecha: ${gasto.fecha}`));
+    }
+
     main.appendChild(icon);
     main.appendChild(copy);
 
@@ -269,13 +274,14 @@ document.getElementById("form-gasto").addEventListener("submit", function (e) {
   const nombre = document.getElementById("input-nombre-gasto").value.trim();
   const monto = Number(document.getElementById("input-monto-gasto").value);
   const categoria = document.getElementById("input-categoria-gasto").value;
+  const fecha = document.getElementById("input-fecha-gasto").value;
 
   if (!nombre) {
     mostrarError("error-gasto", "El nombre del gasto es obligatorio.");
     return;
   }
 
-  if (monto <= 0) {
+  if (Number.isNaN(monto) || monto <= 0) {
     mostrarError("error-gasto", "El monto debe ser mayor que cero.");
     return;
   }
@@ -285,7 +291,12 @@ document.getElementById("form-gasto").addEventListener("submit", function (e) {
     return;
   }
 
-  gastos.push({ nombre, monto, categoria });
+  if (!fecha) {
+    mostrarError("error-gasto", "La fecha es obligatoria.");
+    return;
+  }
+
+  gastos.push({ nombre, monto, categoria, fecha });
 
   this.reset();
   renderAll();

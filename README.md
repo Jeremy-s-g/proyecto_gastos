@@ -226,3 +226,32 @@ Conceptos a reforzar:
 Proximo objetivo practico:
 
 - realizar un cambio pequeno por mi cuenta, revisarlo con calma y guardarlo con Git.
+
+## Sesion de avance del proyecto
+
+Se cambio temporalmente la dinamica para avanzar mas en el producto, manteniendo explicaciones cortas sobre los cambios realizados.
+
+Durante esta sesion se trabajo en mejorar la consistencia de los registros financieros:
+
+- se formateo la fecha de gastos para mostrarla como `dd/mm/aaaa`;
+- se unifico la validacion de montos en gastos, ingresos y deudas usando `Number.isNaN(monto) || monto <= 0`;
+- se agrego fecha a los formularios de ingresos y deudas;
+- se guardo la fecha en los nuevos ingresos y deudas;
+- se mostro la fecha en ingresos, gastos y deudas solo cuando el registro la tiene;
+- se mantuvo compatibilidad con datos antiguos que no tienen fecha.
+
+Tambien se definio una nueva forma de trabajo:
+
+- avanzar en cambios pequenos y concretos;
+- explicar que problema resuelve cada cambio;
+- revisar las lineas modificadas;
+- incluir un glosario breve de los conceptos usados;
+- hacer commits por punto cerrado y push al finalizar la sesion.
+
+Proximas mejoras interesantes:
+
+- agregar identificadores unicos a los registros;
+- mejorar el resumen superior para que muestre metricas mas reales;
+- agregar filtros por mes y categoria;
+- preparar una seccion de compras en cuotas;
+- crear una vista mensual para ver compromisos futuros.

@@ -321,7 +321,7 @@ document.getElementById("form-ingreso").addEventListener("submit", function (e) 
     return;
   }
 
-  if (monto <= 0) {
+  if (Number.isNaN(monto) || monto <= 0) {
     mostrarError("error-ingreso", "El monto debe ser mayor que cero.");
     return;
   }
@@ -347,7 +347,7 @@ document.getElementById("form-deuda").addEventListener("submit", function (e) {
     return;
   }
 
-  if (monto <= 0) {
+  if (Number.isNaN(monto) || monto <= 0) {
     mostrarError("error-deuda", "El monto debe ser mayor que cero.");
     return;
   }

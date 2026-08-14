@@ -51,6 +51,11 @@ function calcularTotal(array) {
   return suma;
 }
 
+function formatearFecha(fecha) {
+  const partes = fecha.split("-");
+  return `${partes[2]}/${partes[1]}/${partes[0]}`;
+}
+
 function mostrarError(id, mensaje) {
   document.getElementById(id).textContent = mensaje;
 }
@@ -169,7 +174,7 @@ function renderGastos() {
     copy.appendChild(crearElemento("span", "", gasto.categoria));
 
     if (gasto.fecha) {
-      copy.appendChild(crearElemento("span", "", `Fecha: ${gasto.fecha}`));
+      copy.appendChild(crearElemento("span", "", `Fecha: ${formatearFecha(gasto.fecha)}`));
     }
 
     main.appendChild(icon);

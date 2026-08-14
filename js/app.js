@@ -138,6 +138,11 @@ function renderIngresos() {
 
     copy.appendChild(crearElemento("strong", "", ingreso.nombre));
     copy.appendChild(crearElemento("span", "", "Ingreso familiar"));
+
+    if (ingreso.fecha) {
+      copy.appendChild(crearElemento("span", "", `Fecha: ${formatearFecha(ingreso.fecha)}`));
+    }
+
     main.appendChild(copy);
 
     actions.appendChild(crearElemento("strong", "positive", formatearMoneda(ingreso.monto)));
@@ -223,6 +228,11 @@ function renderDeudas() {
 
     copy.appendChild(crearElemento("strong", "", deuda.nombre));
     copy.appendChild(crearElemento("span", estadoClase(deuda.estado), deuda.estado));
+
+    if (deuda.fecha) {
+      copy.appendChild(crearElemento("span", "", `Fecha: ${formatearFecha(deuda.fecha)}`));
+    }
+
     main.appendChild(copy);
 
     actions.appendChild(crearElemento("strong", "", formatearMoneda(deuda.monto)));
@@ -315,6 +325,7 @@ document.getElementById("form-ingreso").addEventListener("submit", function (e) 
 
   const nombre = document.getElementById("input-nombre-ingreso").value.trim();
   const monto = Number(document.getElementById("input-monto-ingreso").value);
+  const fecha = document.getElementById("input-fecha-ingreso").value;
 
   if (!nombre) {
     mostrarError("error-ingreso", "El nombre del ingreso es obligatorio.");
@@ -326,7 +337,12 @@ document.getElementById("form-ingreso").addEventListener("submit", function (e) 
     return;
   }
 
-  ingresos.push({ nombre, monto });
+  if (!fecha) {
+    mostrarError("error-ingreso", "La fecha es obligatoria.");
+    return;
+  }
+
+  ingresos.push({ nombre, monto, fecha });
 
   this.reset();
   renderAll();
@@ -341,6 +357,7 @@ document.getElementById("form-deuda").addEventListener("submit", function (e) {
   const nombre = document.getElementById("input-nombre-deuda").value.trim();
   const monto = Number(document.getElementById("input-monto-deuda").value);
   const estado = document.getElementById("input-estado-deuda").value;
+  const fecha = document.getElementById("input-fecha-deuda").value;
 
   if (!nombre) {
     mostrarError("error-deuda", "El nombre de la deuda es obligatorio.");
@@ -357,7 +374,12 @@ document.getElementById("form-deuda").addEventListener("submit", function (e) {
     return;
   }
 
-  deudas.push({ nombre, monto, estado });
+  if (!fecha) {
+    mostrarError("error-deuda", "La fecha es obligatoria.");
+    return;
+  }
+
+  deudas.push({ nombre, monto, estado, fecha });
 
   this.reset();
   renderAll();

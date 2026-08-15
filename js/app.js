@@ -56,6 +56,10 @@ function formatearFecha(fecha) {
   return `${partes[2]}/${partes[1]}/${partes[0]}`;
 }
 
+function generarId(tipo) {
+  return `${tipo}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
 function mostrarError(id, mensaje) {
   document.getElementById(id).textContent = mensaje;
 }
@@ -311,7 +315,7 @@ document.getElementById("form-gasto").addEventListener("submit", function (e) {
     return;
   }
 
-  gastos.push({ nombre, monto, categoria, fecha });
+  gastos.push({ id: generarId("gasto"), nombre, monto, categoria, fecha });
 
   this.reset();
   renderAll();
@@ -342,7 +346,7 @@ document.getElementById("form-ingreso").addEventListener("submit", function (e) 
     return;
   }
 
-  ingresos.push({ nombre, monto, fecha });
+  ingresos.push({ id: generarId("ingreso"), nombre, monto, fecha });
 
   this.reset();
   renderAll();
@@ -379,7 +383,7 @@ document.getElementById("form-deuda").addEventListener("submit", function (e) {
     return;
   }
 
-  deudas.push({ nombre, monto, estado, fecha });
+  deudas.push({ id: generarId("deuda"), nombre, monto, estado, fecha });
 
   this.reset();
   renderAll();

@@ -3,35 +3,43 @@ let gastos = [];
 let deudas = [];
 let toastTimer = null;
 
+function cargarDatosIniciales() {
+  ingresos = [
+    { nombre: "Sueldo principal", monto: 800000 },
+    { nombre: "Sueldo secundario", monto: 400000 },
+    { nombre: "Ingreso adicional", monto: 100000 }
+  ];
+
+  gastos = [
+    { nombre: "Arriendo", monto: 350000, categoria: "Vivienda" },
+    { nombre: "Luz", monto: 25000, categoria: "Servicios" },
+    { nombre: "Agua", monto: 18000, categoria: "Servicios" },
+    { nombre: "Internet", monto: 30000, categoria: "Servicios" },
+    { nombre: "Supermercado", monto: 180000, categoria: "Alimentacion" },
+    { nombre: "Seguro medico", monto: 45000, categoria: "Otros" }
+  ];
+
+  deudas = [
+    { nombre: "Tarjeta de credito", monto: 200000, estado: "Pagando" },
+    { nombre: "Credito de consumo", monto: 500000, estado: "Atrasado" },
+    { nombre: "Compra en cuotas", monto: 120000, estado: "Al dia" }
+  ];
+}
+
 function cargarDatos() {
   const datosGuardados = localStorage.getItem("datos");
 
   if (datosGuardados) {
-    const datos = JSON.parse(datosGuardados);
-    ingresos = datos.ingresos || [];
-    gastos = datos.gastos || [];
-    deudas = datos.deudas || [];
+    try {
+      const datos = JSON.parse(datosGuardados);
+      ingresos = datos.ingresos || [];
+      gastos = datos.gastos || [];
+      deudas = datos.deudas || [];
+    } catch (error) {
+      cargarDatosIniciales();
+    }
   } else {
-    ingresos = [
-      { nombre: "Sueldo principal", monto: 800000 },
-      { nombre: "Sueldo secundario", monto: 400000 },
-      { nombre: "Ingreso adicional", monto: 100000 }
-    ];
-
-    gastos = [
-      { nombre: "Arriendo", monto: 350000, categoria: "Vivienda" },
-      { nombre: "Luz", monto: 25000, categoria: "Servicios" },
-      { nombre: "Agua", monto: 18000, categoria: "Servicios" },
-      { nombre: "Internet", monto: 30000, categoria: "Servicios" },
-      { nombre: "Supermercado", monto: 180000, categoria: "Alimentacion" },
-      { nombre: "Seguro medico", monto: 45000, categoria: "Otros" }
-    ];
-
-    deudas = [
-      { nombre: "Tarjeta de credito", monto: 200000, estado: "Pagando" },
-      { nombre: "Credito de consumo", monto: 500000, estado: "Atrasado" },
-      { nombre: "Compra en cuotas", monto: 120000, estado: "Al dia" }
-    ];
+    cargarDatosIniciales();
   }
 }
 

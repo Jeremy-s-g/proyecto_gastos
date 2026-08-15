@@ -151,7 +151,9 @@ function renderIngresos() {
 
     actions.appendChild(crearElemento("strong", "positive", formatearMoneda(ingreso.monto)));
     actions.appendChild(crearBotonEliminar(`Eliminar ${ingreso.nombre}`, function () {
-      ingresos.splice(i, 1);
+      ingresos = ingreso.id
+        ? ingresos.filter((item) => item.id !== ingreso.id)
+        : ingresos.filter((item, index) => index !== i);
     }));
 
     fila.appendChild(main);
@@ -191,7 +193,9 @@ function renderGastos() {
 
     actions.appendChild(crearElemento("strong", "negative", formatearMoneda(gasto.monto)));
     actions.appendChild(crearBotonEliminar(`Eliminar ${gasto.nombre}`, function () {
-      gastos.splice(i, 1);
+      gastos = gasto.id
+        ? gastos.filter((item) => item.id !== gasto.id)
+        : gastos.filter((item, index) => index !== i);
     }));
 
     fila.appendChild(main);
@@ -241,7 +245,9 @@ function renderDeudas() {
 
     actions.appendChild(crearElemento("strong", "", formatearMoneda(deuda.monto)));
     actions.appendChild(crearBotonEliminar(`Eliminar ${deuda.nombre}`, function () {
-      deudas.splice(i, 1);
+      deudas = deuda.id
+        ? deudas.filter((item) => item.id !== deuda.id)
+        : deudas.filter((item, index) => index !== i);
     }));
 
     fila.appendChild(main);

@@ -5,24 +5,24 @@ let toastTimer = null;
 
 function cargarDatosIniciales() {
   ingresos = [
-    { nombre: "Sueldo principal", monto: 800000 },
-    { nombre: "Sueldo secundario", monto: 400000 },
-    { nombre: "Ingreso adicional", monto: 100000 }
+    { id: generarId("ingreso"), nombre: "Sueldo principal", monto: 800000, fecha: "2026-08-01" },
+    { id: generarId("ingreso"), nombre: "Sueldo secundario", monto: 400000, fecha: "2026-08-01" },
+    { id: generarId("ingreso"), nombre: "Ingreso adicional", monto: 100000, fecha: "2026-08-05" }
   ];
 
   gastos = [
-    { nombre: "Arriendo", monto: 350000, categoria: "Vivienda" },
-    { nombre: "Luz", monto: 25000, categoria: "Servicios" },
-    { nombre: "Agua", monto: 18000, categoria: "Servicios" },
-    { nombre: "Internet", monto: 30000, categoria: "Servicios" },
-    { nombre: "Supermercado", monto: 180000, categoria: "Alimentacion" },
-    { nombre: "Seguro medico", monto: 45000, categoria: "Otros" }
+    { id: generarId("gasto"), nombre: "Arriendo", monto: 350000, categoria: "Vivienda", fecha: "2026-08-02" },
+    { id: generarId("gasto"), nombre: "Luz", monto: 25000, categoria: "Servicios", fecha: "2026-08-08" },
+    { id: generarId("gasto"), nombre: "Agua", monto: 18000, categoria: "Servicios", fecha: "2026-08-09" },
+    { id: generarId("gasto"), nombre: "Internet", monto: 30000, categoria: "Servicios", fecha: "2026-08-10" },
+    { id: generarId("gasto"), nombre: "Supermercado", monto: 180000, categoria: "Alimentacion", fecha: "2026-08-12" },
+    { id: generarId("gasto"), nombre: "Seguro medico", monto: 45000, categoria: "Otros", fecha: "2026-08-15" }
   ];
 
   deudas = [
-    { nombre: "Tarjeta de credito", monto: 200000, estado: "Pagando" },
-    { nombre: "Credito de consumo", monto: 500000, estado: "Atrasado" },
-    { nombre: "Compra en cuotas", monto: 120000, estado: "Al dia" }
+    { id: generarId("deuda"), nombre: "Tarjeta de credito", monto: 200000, estado: "Pagando", fecha: "2026-08-03" },
+    { id: generarId("deuda"), nombre: "Credito de consumo", monto: 500000, estado: "Atrasado", fecha: "2026-08-06" },
+    { id: generarId("deuda"), nombre: "Compra en cuotas", monto: 120000, estado: "Al dia", fecha: "2026-08-11" }
   ];
 }
 
@@ -299,6 +299,18 @@ function renderAll() {
   guardarDatos();
 }
 
+function reiniciarDatos() {
+  const confirmar = confirm("Se reemplazaran los datos actuales por los datos de ejemplo. ¿Continuar?");
+
+  if (!confirmar) {
+    return;
+  }
+
+  cargarDatosIniciales();
+  renderAll();
+  showToast();
+}
+
 document.getElementById("form-gasto").addEventListener("submit", function (e) {
   e.preventDefault();
 
@@ -403,6 +415,8 @@ document.getElementById("form-deuda").addEventListener("submit", function (e) {
   renderAll();
   showToast();
 });
+
+document.getElementById("btn-reiniciar-datos").addEventListener("click", reiniciarDatos);
 
 cargarDatos();
 renderAll();

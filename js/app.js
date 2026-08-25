@@ -273,12 +273,12 @@ function actualizarResumen(totalIngresos, totalGastos, totalDeudas, balance) {
   const ahorroObjetivo = Math.max(totalIngresos * 0.2, 1);
   const ahorroActual = Math.max(balance, 0);
   const metaAhorro = Math.min(Math.round((ahorroActual / ahorroObjetivo) * 100), 100);
-  const variacion = totalIngresos === 0 ? 0 : Math.round((balance / totalIngresos) * 100);
+  const usoIngresos = totalIngresos === 0 ? 0 : Math.round((totalGastos / totalIngresos) * 100);
 
   balanceTotalEl.textContent = formatearMoneda(Math.abs(balance));
   balanceLineEl.classList.toggle("negative", balance < 0);
   balanceIconEl.textContent = balance > 0 ? "trending_up" : balance < 0 ? "trending_down" : "trending_flat";
-  trendEl.textContent = `${variacion > 0 ? "+" : ""}${variacion}%`;
+  trendEl.textContent = `${usoIngresos}%`;
   goalEl.textContent = `${metaAhorro}%`;
 
   document.getElementById("total-ingresos").textContent = formatearMoneda(totalIngresos);

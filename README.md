@@ -255,3 +255,27 @@ Proximas mejoras interesantes:
 - agregar filtros por mes y categoria;
 - preparar una seccion de compras en cuotas;
 - crear una vista mensual para ver compromisos futuros.
+
+## Sesion de mejora del dashboard
+
+En esta sesion se siguio avanzando en la app, pero manteniendo la idea de entender que se cambia y por que.
+
+Cambios realizados:
+
+- se mejoro el resumen superior para que muestre el porcentaje de uso de ingresos;
+- se cambio el texto de las tarjetas pequenas del resumen para que sea mas claro;
+- se agrego un boton para reiniciar los datos de ejemplo;
+- se agrego una confirmacion antes de reiniciar los datos;
+- se actualizaron los datos iniciales para que tambien tengan `id` y fecha;
+- se comprobo el archivo JavaScript con `node --check js/app.js` antes de guardar los cambios.
+
+Notas importantes:
+
+- el porcentaje de uso de ingresos muestra cuanto de los ingresos esta siendo usado por los gastos;
+- el boton de reinicio sirve para volver a datos de ejemplo cuando se quiere probar la app desde cero;
+- los commits se hacen por cambios pequenos para que el historial sea mas facil de entender;
+- el push a GitHub queda como paso final para subir los commits locales.
+
+Proximo paso:
+
+- seguir con una mejora pequena que acerque la app al control mensual de gastos y futuras compras en cuotas.

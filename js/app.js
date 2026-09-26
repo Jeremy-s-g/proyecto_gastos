@@ -1,6 +1,7 @@
 let ingresos = [];
 let gastos = [];
 let deudas = [];
+let comprasCuotas = [];
 let toastTimer = null;
 
 function cargarDatosIniciales() {
@@ -24,6 +25,17 @@ function cargarDatosIniciales() {
     { id: generarId("deuda"), nombre: "Credito de consumo", monto: 500000, estado: "Atrasado", fecha: "2026-08-06" },
     { id: generarId("deuda"), nombre: "Compra en cuotas", monto: 120000, estado: "Al dia", fecha: "2026-08-11" }
   ];
+
+  comprasCuotas = [
+    {
+      id: generarId("compra"),
+      nombre: "Refrigerador",
+      montoTotal: 600000,
+      cantidadCuotas: 6,
+      fechaInicio: "2026-09-01",
+      cuotasPagadas: 0
+    }
+  ];
 }
 
 function cargarDatos() {
@@ -35,6 +47,7 @@ function cargarDatos() {
       ingresos = datos.ingresos || [];
       gastos = datos.gastos || [];
       deudas = datos.deudas || [];
+      comprasCuotas = datos.comprasCuotas || [];
     } catch (error) {
       cargarDatosIniciales();
     }
@@ -44,7 +57,7 @@ function cargarDatos() {
 }
 
 function guardarDatos() {
-  localStorage.setItem("datos", JSON.stringify({ ingresos, gastos, deudas }));
+  localStorage.setItem("datos", JSON.stringify({ ingresos, gastos, deudas, comprasCuotas }));
 }
 
 function formatearMoneda(monto) {
@@ -172,16 +185,26 @@ function renderIngresos() {
 
 function renderGastos() {
   const listaGastos = document.getElementById("lista-gastos");
+  const filtroCategoria = document.getElementById("filtro-categoria-gastos").value;
+  const gastosVisibles = filtroCategoria === "Todas"
+    ? gastos
+    : gastos.filter((gasto) => gasto.categoria === filtroCategoria);
 
   if (gastos.length === 0) {
     renderEmptyState(listaGastos, "Sin gastos registrados.");
     return;
   }
 
+  if (gastosVisibles.length === 0) {
+    renderEmptyState(listaGastos, "No hay gastos en esta categoria.");
+    return;
+  }
+
   listaGastos.innerHTML = "";
 
-  for (let i = 0; i < gastos.length; i++) {
-    const gasto = gastos[i];
+  for (let i = 0; i < gastosVisibles.length; i++) {
+    const gasto = gastosVisibles[i];
+    const indiceOriginal = gastos.indexOf(gasto);
     const fila = crearElemento("div", "finance-item");
     const main = crearElemento("div", "item-main");
     const icon = crearElemento("div", "item-icon");
@@ -203,7 +226,7 @@ function renderGastos() {
     actions.appendChild(crearBotonEliminar(`Eliminar ${gasto.nombre}`, function () {
       gastos = gasto.id
         ? gastos.filter((item) => item.id !== gasto.id)
-        : gastos.filter((item, index) => index !== i);
+        : gastos.filter((item, index) => index !== indiceOriginal);
     }));
 
     fila.appendChild(main);
@@ -417,6 +440,7 @@ document.getElementById("form-deuda").addEventListener("submit", function (e) {
 });
 
 document.getElementById("btn-reiniciar-datos").addEventListener("click", reiniciarDatos);
+document.getElementById("filtro-categoria-gastos").addEventListener("change", renderGastos);
 
 cargarDatos();
 renderAll();

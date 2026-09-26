@@ -159,7 +159,7 @@ Construir una aplicacion para organizar ingresos, gastos y deudas familiares, ap
 
 ## Estado actual
 
-Dia 11 de aprendizaje.
+El proyecto ya cuenta con un dashboard funcional para registrar y revisar ingresos, gastos y deudas familiares.
 
 Actualmente el proyecto tiene:
 
@@ -177,7 +177,14 @@ Actualmente el proyecto tiene:
 - colores de balance segun estado (positivo, negativo, cero),
 - botones "Eliminar" en cada elemento de las listas,
 - funcion centralizada `renderAll()` que refresca todo automaticamente,
-- formulario funcional para agregar nuevos gastos desde la interfaz.
+- formularios para agregar ingresos, gastos y deudas desde la interfaz,
+- validaciones basicas para nombres, montos, fechas, categorias y estados,
+- fechas formateadas para mostrarlas de forma mas clara,
+- identificadores unicos para los registros nuevos,
+- persistencia de datos usando `localStorage`,
+- boton para reiniciar los datos de ejemplo,
+- filtro de gastos por categoria,
+- estructura inicial para compras en cuotas.
 
 ## Tecnologias utilizadas
 
@@ -189,11 +196,13 @@ Actualmente el proyecto tiene:
 
 ## Proximos pasos
 
-- Agregar formularios para anadir nuevos ingresos y deudas desde la interfaz.
-- Guardar los datos en localStorage para que persistan al recargar la pagina.
-- Agregar confirmacion antes de eliminar elementos.
-- Mejorar la apariencia general de la aplicacion con mas estilos visuales.
-- Agregar una seccion de historial o registro de cambios.
+- Mostrar las compras en cuotas dentro de la interfaz.
+- Agregar un formulario para registrar nuevas compras en cuotas.
+- Calcular el valor mensual de cada cuota.
+- Mostrar el historial y las fechas de pago de cada compra.
+- Agregar edicion de registros existentes.
+- Crear filtros por mes y una busqueda por nombre.
+- Actualizar el README despues de cada avance importante.
 
 ## Sesion de repaso de fundamentos
 
@@ -275,6 +284,19 @@ Notas importantes:
 - el boton de reinicio sirve para volver a datos de ejemplo cuando se quiere probar la app desde cero;
 - los commits se hacen por cambios pequenos para que el historial sea mas facil de entender;
 - el push a GitHub queda como paso final para subir los commits locales.
+
+## Sesion de compras en cuotas
+
+Se comenzo a preparar la nueva funcionalidad de compras en cuotas.
+
+Durante esta sesion:
+
+- se creo el array `comprasCuotas` para guardar varias compras;
+- se agrego un objeto de ejemplo con nombre, monto total, cantidad de cuotas, fecha de inicio y cuotas pagadas;
+- se incorporo `comprasCuotas` a la carga y guardado de `localStorage`;
+- se comprobo desde la consola que el array contiene correctamente el objeto de ejemplo.
+
+Por ahora esta informacion se guarda, pero todavia no se muestra en pantalla. El siguiente paso sera crear la seccion visual para revisar estas compras.
 
 Proximo paso:
 

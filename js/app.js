@@ -287,6 +287,31 @@ function renderDeudas() {
   }
 }
 
+function renderComprasCuotas() {
+  const listaCompras = document.getElementById("lista-compras-cuotas");
+
+  if (comprasCuotas.length === 0) {
+    renderEmptyState(listaCompras, "Sin compras en cuotas.");
+    return;
+  }
+
+  listaCompras.innerHTML = "";
+
+  for (const compra of comprasCuotas) {
+    const valorCuota = Math.round(compra.montoTotal / compra.cantidadCuotas);
+    const fila = crearElemento("div", "finance-item");
+    const copy = crearElemento("div", "item-copy");
+
+    copy.appendChild(crearElemento("strong", "", compra.nombre));
+    copy.appendChild(crearElemento("span", "", `Cuota mensual: ${formatearMoneda(valorCuota)}`));
+    copy.appendChild(crearElemento("span", "", `Cuotas pagadas: ${compra.cuotasPagadas} de ${compra.cantidadCuotas}`));
+    copy.appendChild(crearElemento("span", "", `Inicio: ${formatearFecha(compra.fechaInicio)}`));
+
+    fila.appendChild(copy);
+    listaCompras.appendChild(fila);
+  }
+}
+
 function actualizarResumen(totalIngresos, totalGastos, totalDeudas, balance) {
   const balanceTotalEl = document.getElementById("balance-total");
   const balanceLineEl = balanceTotalEl.closest(".balance-line");
@@ -319,6 +344,7 @@ function renderAll() {
   renderIngresos();
   renderGastos();
   renderDeudas();
+  renderComprasCuotas();
   guardarDatos();
 }
 

@@ -161,6 +161,17 @@
         </div>
 
         <div class="item-list" id="lista-compras-cuotas"></div>
+
+        <form id="form-compra-cuotas" class="compact-form">
+          <div class="form-grid">
+            <input type="text" id="input-nombre-compra" placeholder="Compra" required>
+            <input type="number" id="input-monto-compra" placeholder="Monto total" required>
+            <input type="number" id="input-cantidad-cuotas" placeholder="Cantidad de cuotas" required>
+            <input type="date" id="input-fecha-compra" required>
+          </div>
+          <p class="mensaje-error" id="error-compra-cuotas"></p>
+          <button type="submit">Agregar compra</button>
+        </form>
       </section>
 
       <div class="toast" id="interaction-overlay" role="status">Cambios guardados</div>

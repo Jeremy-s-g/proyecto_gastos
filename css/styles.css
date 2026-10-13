@@ -329,6 +329,11 @@ a {
   font-weight: 700;
 }
 
+.installment-card .compact-form {
+  padding: 16px;
+  border-top: 1px solid var(--outline-variant);
+}
+
 .item-list {
   flex: 1 1 auto;
   min-height: 210px;
@@ -549,6 +554,12 @@ input:focus,
 select:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 1px var(--primary);
+}
+
+input.input-error,
+select.input-error {
+  border-color: var(--negative);
+  box-shadow: 0 0 0 1px var(--negative);
 }
 
 .compact-form button {

@@ -81,8 +81,18 @@ function generarId(tipo) {
   return `${tipo}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
-function mostrarError(id, mensaje) {
+function limpiarErrores(formId) {
+  document.getElementById(formId).querySelectorAll(".input-error").forEach((campo) => {
+    campo.classList.remove("input-error");
+  });
+}
+
+function mostrarError(id, mensaje, campoId) {
   document.getElementById(id).textContent = mensaje;
+
+  if (campoId) {
+    document.getElementById(campoId).classList.add("input-error");
+  }
 }
 
 function showToast() {
@@ -301,13 +311,19 @@ function renderComprasCuotas() {
     const valorCuota = Math.round(compra.montoTotal / compra.cantidadCuotas);
     const fila = crearElemento("div", "finance-item");
     const copy = crearElemento("div", "item-copy");
+    const actions = crearElemento("div", "item-actions");
 
     copy.appendChild(crearElemento("strong", "", compra.nombre));
     copy.appendChild(crearElemento("span", "", `Cuota mensual: ${formatearMoneda(valorCuota)}`));
     copy.appendChild(crearElemento("span", "", `Cuotas pagadas: ${compra.cuotasPagadas} de ${compra.cantidadCuotas}`));
     copy.appendChild(crearElemento("span", "", `Inicio: ${formatearFecha(compra.fechaInicio)}`));
 
+    actions.appendChild(crearBotonEliminar(`Eliminar ${compra.nombre}`, function () {
+      comprasCuotas = comprasCuotas.filter((item) => item.id !== compra.id);
+    }));
+
     fila.appendChild(copy);
+    fila.appendChild(actions);
     listaCompras.appendChild(fila);
   }
 }
@@ -363,6 +379,7 @@ function reiniciarDatos() {
 document.getElementById("form-gasto").addEventListener("submit", function (e) {
   e.preventDefault();
 
+  limpiarErrores("form-gasto");
   mostrarError("error-gasto", "");
 
   const nombre = document.getElementById("input-nombre-gasto").value.trim();
@@ -371,22 +388,22 @@ document.getElementById("form-gasto").addEventListener("submit", function (e) {
   const fecha = document.getElementById("input-fecha-gasto").value;
 
   if (!nombre) {
-    mostrarError("error-gasto", "El nombre del gasto es obligatorio.");
+    mostrarError("error-gasto", "El nombre del gasto es obligatorio.", "input-nombre-gasto");
     return;
   }
 
   if (Number.isNaN(monto) || monto <= 0) {
-    mostrarError("error-gasto", "El monto debe ser mayor que cero.");
+    mostrarError("error-gasto", "El monto debe ser mayor que cero.", "input-monto-gasto");
     return;
   }
 
   if (!categoria) {
-    mostrarError("error-gasto", "La categoria es obligatoria.");
+    mostrarError("error-gasto", "La categoria es obligatoria.", "input-categoria-gasto");
     return;
   }
 
   if (!fecha) {
-    mostrarError("error-gasto", "La fecha es obligatoria.");
+    mostrarError("error-gasto", "La fecha es obligatoria.", "input-fecha-gasto");
     return;
   }
 
@@ -400,6 +417,7 @@ document.getElementById("form-gasto").addEventListener("submit", function (e) {
 document.getElementById("form-ingreso").addEventListener("submit", function (e) {
   e.preventDefault();
 
+  limpiarErrores("form-ingreso");
   mostrarError("error-ingreso", "");
 
   const nombre = document.getElementById("input-nombre-ingreso").value.trim();
@@ -407,17 +425,17 @@ document.getElementById("form-ingreso").addEventListener("submit", function (e) 
   const fecha = document.getElementById("input-fecha-ingreso").value;
 
   if (!nombre) {
-    mostrarError("error-ingreso", "El nombre del ingreso es obligatorio.");
+    mostrarError("error-ingreso", "El nombre del ingreso es obligatorio.", "input-nombre-ingreso");
     return;
   }
 
   if (Number.isNaN(monto) || monto <= 0) {
-    mostrarError("error-ingreso", "El monto debe ser mayor que cero.");
+    mostrarError("error-ingreso", "El monto debe ser mayor que cero.", "input-monto-ingreso");
     return;
   }
 
   if (!fecha) {
-    mostrarError("error-ingreso", "La fecha es obligatoria.");
+    mostrarError("error-ingreso", "La fecha es obligatoria.", "input-fecha-ingreso");
     return;
   }
 
@@ -431,6 +449,7 @@ document.getElementById("form-ingreso").addEventListener("submit", function (e) 
 document.getElementById("form-deuda").addEventListener("submit", function (e) {
   e.preventDefault();
 
+  limpiarErrores("form-deuda");
   mostrarError("error-deuda", "");
 
   const nombre = document.getElementById("input-nombre-deuda").value.trim();
@@ -439,26 +458,71 @@ document.getElementById("form-deuda").addEventListener("submit", function (e) {
   const fecha = document.getElementById("input-fecha-deuda").value;
 
   if (!nombre) {
-    mostrarError("error-deuda", "El nombre de la deuda es obligatorio.");
+    mostrarError("error-deuda", "El nombre de la deuda es obligatorio.", "input-nombre-deuda");
     return;
   }
 
   if (Number.isNaN(monto) || monto <= 0) {
-    mostrarError("error-deuda", "El monto debe ser mayor que cero.");
+    mostrarError("error-deuda", "El monto debe ser mayor que cero.", "input-monto-deuda");
     return;
   }
 
   if (!estado) {
-    mostrarError("error-deuda", "El estado es obligatorio.");
+    mostrarError("error-deuda", "El estado es obligatorio.", "input-estado-deuda");
     return;
   }
 
   if (!fecha) {
-    mostrarError("error-deuda", "La fecha es obligatoria.");
+    mostrarError("error-deuda", "La fecha es obligatoria.", "input-fecha-deuda");
     return;
   }
 
   deudas.push({ id: generarId("deuda"), nombre, monto, estado, fecha });
+
+  this.reset();
+  renderAll();
+  showToast();
+});
+
+document.getElementById("form-compra-cuotas").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  limpiarErrores("form-compra-cuotas");
+  mostrarError("error-compra-cuotas", "");
+
+  const nombre = document.getElementById("input-nombre-compra").value.trim();
+  const montoTotal = Number(document.getElementById("input-monto-compra").value);
+  const cantidadCuotas = Number(document.getElementById("input-cantidad-cuotas").value);
+  const fechaInicio = document.getElementById("input-fecha-compra").value;
+
+  if (!nombre || !/[A-Za-zÁÉÍÓÚáéíóúÑñ]/.test(nombre)) {
+    mostrarError("error-compra-cuotas", "El nombre debe contener al menos una letra.", "input-nombre-compra");
+    return;
+  }
+
+  if (Number.isNaN(montoTotal) || montoTotal <= 0) {
+    mostrarError("error-compra-cuotas", "El monto debe ser mayor que cero.", "input-monto-compra");
+    return;
+  }
+
+  if (!Number.isInteger(cantidadCuotas) || cantidadCuotas <= 0) {
+    mostrarError("error-compra-cuotas", "La cantidad de cuotas debe ser un numero entero mayor que cero.", "input-cantidad-cuotas");
+    return;
+  }
+
+  if (!fechaInicio) {
+    mostrarError("error-compra-cuotas", "La fecha de inicio es obligatoria.", "input-fecha-compra");
+    return;
+  }
+
+  comprasCuotas.push({
+    id: generarId("compra"),
+    nombre,
+    montoTotal,
+    cantidadCuotas,
+    fechaInicio,
+    cuotasPagadas: 0
+  });
 
   this.reset();
   renderAll();

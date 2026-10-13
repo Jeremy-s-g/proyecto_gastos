@@ -77,6 +77,17 @@ function formatearFecha(fecha) {
   return `${partes[2]}/${partes[1]}/${partes[0]}`;
 }
 
+function calcularFechaTermino(fechaInicio, cantidadCuotas) {
+  const fechaTermino = new Date(`${fechaInicio}T12:00:00`);
+  fechaTermino.setMonth(fechaTermino.getMonth() + cantidadCuotas - 1);
+
+  const anio = fechaTermino.getFullYear();
+  const mes = String(fechaTermino.getMonth() + 1).padStart(2, "0");
+  const dia = String(fechaTermino.getDate()).padStart(2, "0");
+
+  return `${anio}-${mes}-${dia}`;
+}
+
 function generarId(tipo) {
   return `${tipo}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
@@ -309,15 +320,29 @@ function renderComprasCuotas() {
 
   for (const compra of comprasCuotas) {
     const valorCuota = Math.round(compra.montoTotal / compra.cantidadCuotas);
+    const cuotasRestantes = Math.max(compra.cantidadCuotas - compra.cuotasPagadas, 0);
+    const fechaTermino = calcularFechaTermino(compra.fechaInicio, compra.cantidadCuotas);
     const fila = crearElemento("div", "finance-item");
     const copy = crearElemento("div", "item-copy");
     const actions = crearElemento("div", "item-actions");
+    const botonPago = crearElemento("button", "payment-button", "Pagar cuota");
+
+    botonPago.type = "button";
+    botonPago.disabled = compra.cuotasPagadas >= compra.cantidadCuotas;
+    botonPago.addEventListener("click", function () {
+      compra.cuotasPagadas += 1;
+      renderAll();
+      showToast();
+    });
 
     copy.appendChild(crearElemento("strong", "", compra.nombre));
     copy.appendChild(crearElemento("span", "", `Cuota mensual: ${formatearMoneda(valorCuota)}`));
     copy.appendChild(crearElemento("span", "", `Cuotas pagadas: ${compra.cuotasPagadas} de ${compra.cantidadCuotas}`));
+    copy.appendChild(crearElemento("span", "", `Cuotas restantes: ${cuotasRestantes}`));
     copy.appendChild(crearElemento("span", "", `Inicio: ${formatearFecha(compra.fechaInicio)}`));
+    copy.appendChild(crearElemento("span", "", `Termina: ${formatearFecha(fechaTermino)}`));
 
+    actions.appendChild(botonPago);
     actions.appendChild(crearBotonEliminar(`Eliminar ${compra.nombre}`, function () {
       comprasCuotas = comprasCuotas.filter((item) => item.id !== compra.id);
     }));

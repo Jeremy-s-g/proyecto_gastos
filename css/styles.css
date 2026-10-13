@@ -455,6 +455,26 @@ a {
   color: var(--negative);
 }
 
+.payment-button {
+  min-height: 32px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 8px;
+  color: var(--primary-ink);
+  background: var(--primary);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.payment-button:hover {
+  background: var(--primary-strong);
+}
+
+.payment-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
 .delete-button {
   width: 28px;
   height: 28px;

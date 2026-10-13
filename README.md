@@ -295,9 +295,15 @@ Durante esta sesion:
 - se agrego un objeto de ejemplo con nombre, monto total, cantidad de cuotas, fecha de inicio y cuotas pagadas;
 - se incorporo `comprasCuotas` a la carga y guardado de `localStorage`;
 - se comprobo desde la consola que el array contiene correctamente el objeto de ejemplo.
+- se agrego un formulario para registrar nuevas compras en cuotas;
+- se agrego validacion para el nombre, monto, cantidad de cuotas y fecha;
+- se agrego la eliminacion de compras en cuotas mediante su identificador;
+- se agrego el calculo de cuotas restantes y fecha estimada de termino.
+- se agrego el boton `Pagar cuota` para aumentar el progreso de cada compra;
+- el boton se desactiva cuando todas las cuotas ya fueron pagadas.
 
-Por ahora esta informacion se guarda, pero todavia no se muestra en pantalla. El siguiente paso sera crear la seccion visual para revisar estas compras.
+La informacion se guarda en `localStorage` y ahora se muestra en pantalla junto con el progreso y la fecha estimada de termino.
 
 Proximo paso:
 
-- seguir con una mejora pequena que acerque la app al control mensual de gastos y futuras compras en cuotas.
+- mostrar un historial mensual con las fechas y montos de cada cuota.

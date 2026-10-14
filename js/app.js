@@ -77,15 +77,19 @@ function formatearFecha(fecha) {
   return `${partes[2]}/${partes[1]}/${partes[0]}`;
 }
 
-function calcularFechaTermino(fechaInicio, cantidadCuotas) {
-  const fechaTermino = new Date(`${fechaInicio}T12:00:00`);
-  fechaTermino.setMonth(fechaTermino.getMonth() + cantidadCuotas - 1);
+function calcularFechaCuota(fechaInicio, numeroCuota) {
+  const fechaCuota = new Date(`${fechaInicio}T12:00:00`);
+  fechaCuota.setMonth(fechaCuota.getMonth() + numeroCuota - 1);
 
-  const anio = fechaTermino.getFullYear();
-  const mes = String(fechaTermino.getMonth() + 1).padStart(2, "0");
-  const dia = String(fechaTermino.getDate()).padStart(2, "0");
+  const anio = fechaCuota.getFullYear();
+  const mes = String(fechaCuota.getMonth() + 1).padStart(2, "0");
+  const dia = String(fechaCuota.getDate()).padStart(2, "0");
 
   return `${anio}-${mes}-${dia}`;
+}
+
+function calcularFechaTermino(fechaInicio, cantidadCuotas) {
+  return calcularFechaCuota(fechaInicio, cantidadCuotas);
 }
 
 function generarId(tipo) {
@@ -310,6 +314,8 @@ function renderDeudas() {
 
 function renderComprasCuotas() {
   const listaCompras = document.getElementById("lista-compras-cuotas");
+  const filtroMes = document.getElementById("filtro-mes-cuotas").value;
+  let cuotasMostradas = 0;
 
   if (comprasCuotas.length === 0) {
     renderEmptyState(listaCompras, "Sin compras en cuotas.");
@@ -322,15 +328,29 @@ function renderComprasCuotas() {
     const valorCuota = Math.round(compra.montoTotal / compra.cantidadCuotas);
     const cuotasRestantes = Math.max(compra.cantidadCuotas - compra.cuotasPagadas, 0);
     const fechaTermino = calcularFechaTermino(compra.fechaInicio, compra.cantidadCuotas);
+    const historial = [];
     const fila = crearElemento("div", "finance-item");
     const copy = crearElemento("div", "item-copy");
     const actions = crearElemento("div", "item-actions");
     const botonPago = crearElemento("button", "payment-button", "Pagar cuota");
+    const botonDeshacer = crearElemento("button", "undo-payment-button", "Deshacer pago");
 
     botonPago.type = "button";
     botonPago.disabled = compra.cuotasPagadas >= compra.cantidadCuotas;
     botonPago.addEventListener("click", function () {
       compra.cuotasPagadas += 1;
+      renderAll();
+      showToast();
+    });
+
+    botonDeshacer.type = "button";
+    botonDeshacer.disabled = compra.cuotasPagadas === 0;
+    botonDeshacer.addEventListener("click", function () {
+      if (compra.cuotasPagadas === 0) {
+        return;
+      }
+
+      compra.cuotasPagadas -= 1;
       renderAll();
       showToast();
     });
@@ -342,7 +362,37 @@ function renderComprasCuotas() {
     copy.appendChild(crearElemento("span", "", `Inicio: ${formatearFecha(compra.fechaInicio)}`));
     copy.appendChild(crearElemento("span", "", `Termina: ${formatearFecha(fechaTermino)}`));
 
+    for (let numero = 1; numero <= compra.cantidadCuotas; numero++) {
+      historial.push({
+        numero,
+        fecha: calcularFechaCuota(compra.fechaInicio, numero),
+        monto: valorCuota,
+        pagada: numero <= compra.cuotasPagadas
+      });
+    }
+
+    const cuotasVisibles = filtroMes
+      ? historial.filter((cuota) => cuota.fecha.startsWith(filtroMes))
+      : historial;
+
+    if (cuotasVisibles.length === 0) {
+      continue;
+    }
+
+    const historialElement = crearElemento("div", "installment-history");
+
+    for (const cuota of cuotasVisibles) {
+      const estado = cuota.pagada ? "paid" : "pending";
+      const texto = `Cuota ${cuota.numero} - ${formatearFecha(cuota.fecha)} - ${formatearMoneda(cuota.monto)} - ${cuota.pagada ? "Pagada" : "Pendiente"}`;
+      historialElement.appendChild(crearElemento("span", estado, texto));
+    }
+
+    cuotasMostradas += cuotasVisibles.length;
+
+    copy.appendChild(historialElement);
+
     actions.appendChild(botonPago);
+    actions.appendChild(botonDeshacer);
     actions.appendChild(crearBotonEliminar(`Eliminar ${compra.nombre}`, function () {
       comprasCuotas = comprasCuotas.filter((item) => item.id !== compra.id);
     }));
@@ -350,6 +400,10 @@ function renderComprasCuotas() {
     fila.appendChild(copy);
     fila.appendChild(actions);
     listaCompras.appendChild(fila);
+  }
+
+  if (cuotasMostradas === 0) {
+    renderEmptyState(listaCompras, "No hay cuotas para el mes seleccionado.");
   }
 }
 
@@ -556,6 +610,7 @@ document.getElementById("form-compra-cuotas").addEventListener("submit", functio
 
 document.getElementById("btn-reiniciar-datos").addEventListener("click", reiniciarDatos);
 document.getElementById("filtro-categoria-gastos").addEventListener("change", renderGastos);
+document.getElementById("filtro-mes-cuotas").addEventListener("change", renderComprasCuotas);
 
 cargarDatos();
 renderAll();

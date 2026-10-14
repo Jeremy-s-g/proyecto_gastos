@@ -301,9 +301,13 @@ Durante esta sesion:
 - se agrego el calculo de cuotas restantes y fecha estimada de termino.
 - se agrego el boton `Pagar cuota` para aumentar el progreso de cada compra;
 - el boton se desactiva cuando todas las cuotas ya fueron pagadas.
+- se agrego un historial mensual calculado para cada compra;
+- cada cuota muestra numero, fecha, monto y estado de pago.
+- se agrego el boton `Deshacer pago` para corregir la ultima cuota marcada.
+- se agrego un filtro mensual para revisar las cuotas de un periodo especifico.
 
 La informacion se guarda en `localStorage` y ahora se muestra en pantalla junto con el progreso y la fecha estimada de termino.
 
 Proximo paso:
 
-- mostrar un historial mensual con las fechas y montos de cada cuota.
+- mejorar el resumen para mostrar compromisos proximos.

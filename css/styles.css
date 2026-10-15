@@ -472,7 +472,8 @@ a {
   color: var(--negative);
 }
 
-.payment-button {
+.payment-button,
+.edit-button {
   min-height: 32px;
   padding: 0 10px;
   border: 0;
@@ -483,7 +484,8 @@ a {
   font-weight: 800;
 }
 
-.payment-button:hover {
+.payment-button:hover,
+.edit-button:hover {
   background: var(--primary-strong);
 }
 
@@ -638,6 +640,25 @@ select.input-error {
 
 .compact-form button:active {
   transform: scale(0.98);
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.form-actions button {
+  flex: 1;
+}
+
+.cancel-button {
+  border: 1px solid var(--outline-variant) !important;
+  color: var(--text-muted) !important;
+  background: transparent !important;
+}
+
+.cancel-button:hover {
+  background: var(--surface-container) !important;
 }
 
 .mensaje-error {

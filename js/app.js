@@ -2,6 +2,8 @@ let ingresos = [];
 let gastos = [];
 let deudas = [];
 let comprasCuotas = [];
+let compraEditandoId = null;
+let registroEditando = { tipo: null, id: null };
 let toastTimer = null;
 
 function cargarDatosIniciales() {
@@ -72,6 +74,18 @@ function calcularTotal(array) {
   return suma;
 }
 
+function calcularTotalCuotasPendientes() {
+  let total = 0;
+
+  for (const compra of comprasCuotas) {
+    const valorCuota = Math.round(compra.montoTotal / compra.cantidadCuotas);
+    const cuotasRestantes = Math.max(compra.cantidadCuotas - compra.cuotasPagadas, 0);
+    total = total + valorCuota * cuotasRestantes;
+  }
+
+  return total;
+}
+
 function formatearFecha(fecha) {
   const partes = fecha.split("-");
   return `${partes[2]}/${partes[1]}/${partes[0]}`;
@@ -108,6 +122,74 @@ function mostrarError(id, mensaje, campoId) {
   if (campoId) {
     document.getElementById(campoId).classList.add("input-error");
   }
+}
+
+function iniciarEdicionCompra(compra) {
+  compraEditandoId = compra.id;
+  document.getElementById("input-nombre-compra").value = compra.nombre;
+  document.getElementById("input-monto-compra").value = compra.montoTotal;
+  document.getElementById("input-cantidad-cuotas").value = compra.cantidadCuotas;
+  document.getElementById("input-fecha-compra").value = compra.fechaInicio;
+  document.getElementById("btn-submit-compra").textContent = "Guardar cambios";
+  document.getElementById("btn-cancelar-compra").hidden = false;
+  document.getElementById("form-compra-cuotas").scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function cancelarEdicionCompra() {
+  compraEditandoId = null;
+  document.getElementById("form-compra-cuotas").reset();
+  document.getElementById("btn-submit-compra").textContent = "Agregar compra";
+  document.getElementById("btn-cancelar-compra").hidden = true;
+  limpiarErrores("form-compra-cuotas");
+  mostrarError("error-compra-cuotas", "");
+}
+
+function iniciarEdicionRegistro(tipo, registro) {
+  registroEditando = { tipo, id: registro.id };
+
+  const campos = {
+    ingreso: {
+      nombre: "input-nombre-ingreso",
+      monto: "input-monto-ingreso",
+      fecha: "input-fecha-ingreso"
+    },
+    gasto: {
+      nombre: "input-nombre-gasto",
+      monto: "input-monto-gasto",
+      categoria: "input-categoria-gasto",
+      fecha: "input-fecha-gasto"
+    },
+    deuda: {
+      nombre: "input-nombre-deuda",
+      monto: "input-monto-deuda",
+      estado: "input-estado-deuda",
+      fecha: "input-fecha-deuda"
+    }
+  }[tipo];
+
+  document.getElementById(campos.nombre).value = registro.nombre;
+  document.getElementById(campos.monto).value = registro.monto;
+  document.getElementById(campos.fecha).value = registro.fecha;
+
+  if (campos.categoria) {
+    document.getElementById(campos.categoria).value = registro.categoria;
+  }
+
+  if (campos.estado) {
+    document.getElementById(campos.estado).value = registro.estado;
+  }
+
+  document.getElementById(`btn-submit-${tipo}`).textContent = "Guardar cambios";
+  document.getElementById(`btn-cancelar-${tipo}`).hidden = false;
+}
+
+function cancelarEdicionRegistro(tipo) {
+  registroEditando = { tipo: null, id: null };
+  document.getElementById(`form-${tipo}`).reset();
+  document.getElementById(`btn-submit-${tipo}`).textContent = tipo === "gasto" ? "OK" : "Agregar";
+  document.getElementById(`btn-cancelar-${tipo}`).hidden = true;
+  limpiarErrores(`form-${tipo}`);
+  mostrarError(`error-${tipo}`, "");
 }
 
 function showToast() {
@@ -196,6 +278,12 @@ function renderIngresos() {
     main.appendChild(copy);
 
     actions.appendChild(crearElemento("strong", "positive", formatearMoneda(ingreso.monto)));
+    const botonEditar = crearElemento("button", "edit-button", "Editar");
+    botonEditar.type = "button";
+    botonEditar.addEventListener("click", function () {
+      iniciarEdicionRegistro("ingreso", ingreso);
+    });
+    actions.appendChild(botonEditar);
     actions.appendChild(crearBotonEliminar(`Eliminar ${ingreso.nombre}`, function () {
       ingresos = ingreso.id
         ? ingresos.filter((item) => item.id !== ingreso.id)
@@ -248,6 +336,12 @@ function renderGastos() {
     main.appendChild(copy);
 
     actions.appendChild(crearElemento("strong", "negative", formatearMoneda(gasto.monto)));
+    const botonEditar = crearElemento("button", "edit-button", "Editar");
+    botonEditar.type = "button";
+    botonEditar.addEventListener("click", function () {
+      iniciarEdicionRegistro("gasto", gasto);
+    });
+    actions.appendChild(botonEditar);
     actions.appendChild(crearBotonEliminar(`Eliminar ${gasto.nombre}`, function () {
       gastos = gasto.id
         ? gastos.filter((item) => item.id !== gasto.id)
@@ -300,6 +394,12 @@ function renderDeudas() {
     main.appendChild(copy);
 
     actions.appendChild(crearElemento("strong", "", formatearMoneda(deuda.monto)));
+    const botonEditar = crearElemento("button", "edit-button", "Editar");
+    botonEditar.type = "button";
+    botonEditar.addEventListener("click", function () {
+      iniciarEdicionRegistro("deuda", deuda);
+    });
+    actions.appendChild(botonEditar);
     actions.appendChild(crearBotonEliminar(`Eliminar ${deuda.nombre}`, function () {
       deudas = deuda.id
         ? deudas.filter((item) => item.id !== deuda.id)
@@ -334,6 +434,7 @@ function renderComprasCuotas() {
     const actions = crearElemento("div", "item-actions");
     const botonPago = crearElemento("button", "payment-button", "Pagar cuota");
     const botonDeshacer = crearElemento("button", "undo-payment-button", "Deshacer pago");
+    const botonEditar = crearElemento("button", "edit-button", "Editar");
 
     botonPago.type = "button";
     botonPago.disabled = compra.cuotasPagadas >= compra.cantidadCuotas;
@@ -353,6 +454,11 @@ function renderComprasCuotas() {
       compra.cuotasPagadas -= 1;
       renderAll();
       showToast();
+    });
+
+    botonEditar.type = "button";
+    botonEditar.addEventListener("click", function () {
+      iniciarEdicionCompra(compra);
     });
 
     copy.appendChild(crearElemento("strong", "", compra.nombre));
@@ -391,6 +497,7 @@ function renderComprasCuotas() {
 
     copy.appendChild(historialElement);
 
+    actions.appendChild(botonEditar);
     actions.appendChild(botonPago);
     actions.appendChild(botonDeshacer);
     actions.appendChild(crearBotonEliminar(`Eliminar ${compra.nombre}`, function () {
@@ -413,16 +520,19 @@ function actualizarResumen(totalIngresos, totalGastos, totalDeudas, balance) {
   const balanceIconEl = document.getElementById("balance-icon");
   const trendEl = document.getElementById("balance-trend");
   const goalEl = document.getElementById("balance-goal");
+  const installmentsEl = document.getElementById("balance-installments");
   const ahorroObjetivo = Math.max(totalIngresos * 0.2, 1);
   const ahorroActual = Math.max(balance, 0);
   const metaAhorro = Math.min(Math.round((ahorroActual / ahorroObjetivo) * 100), 100);
   const usoIngresos = totalIngresos === 0 ? 0 : Math.round((totalGastos / totalIngresos) * 100);
+  const totalCuotasPendientes = calcularTotalCuotasPendientes();
 
   balanceTotalEl.textContent = formatearMoneda(Math.abs(balance));
   balanceLineEl.classList.toggle("negative", balance < 0);
   balanceIconEl.textContent = balance > 0 ? "trending_up" : balance < 0 ? "trending_down" : "trending_flat";
   trendEl.textContent = `${usoIngresos}%`;
   goalEl.textContent = `${metaAhorro}%`;
+  installmentsEl.textContent = formatearMoneda(totalCuotasPendientes);
 
   document.getElementById("total-ingresos").textContent = formatearMoneda(totalIngresos);
   document.getElementById("total-gastos").textContent = formatearMoneda(totalGastos);
@@ -486,9 +596,17 @@ document.getElementById("form-gasto").addEventListener("submit", function (e) {
     return;
   }
 
-  gastos.push({ id: generarId("gasto"), nombre, monto, categoria, fecha });
+  if (registroEditando.tipo === "gasto") {
+    const gasto = gastos.find((item) => item.id === registroEditando.id);
+    gasto.nombre = nombre;
+    gasto.monto = monto;
+    gasto.categoria = categoria;
+    gasto.fecha = fecha;
+  } else {
+    gastos.push({ id: generarId("gasto"), nombre, monto, categoria, fecha });
+  }
 
-  this.reset();
+  cancelarEdicionRegistro("gasto");
   renderAll();
   showToast();
 });
@@ -518,9 +636,16 @@ document.getElementById("form-ingreso").addEventListener("submit", function (e) 
     return;
   }
 
-  ingresos.push({ id: generarId("ingreso"), nombre, monto, fecha });
+  if (registroEditando.tipo === "ingreso") {
+    const ingreso = ingresos.find((item) => item.id === registroEditando.id);
+    ingreso.nombre = nombre;
+    ingreso.monto = monto;
+    ingreso.fecha = fecha;
+  } else {
+    ingresos.push({ id: generarId("ingreso"), nombre, monto, fecha });
+  }
 
-  this.reset();
+  cancelarEdicionRegistro("ingreso");
   renderAll();
   showToast();
 });
@@ -556,9 +681,17 @@ document.getElementById("form-deuda").addEventListener("submit", function (e) {
     return;
   }
 
-  deudas.push({ id: generarId("deuda"), nombre, monto, estado, fecha });
+  if (registroEditando.tipo === "deuda") {
+    const deuda = deudas.find((item) => item.id === registroEditando.id);
+    deuda.nombre = nombre;
+    deuda.monto = monto;
+    deuda.estado = estado;
+    deuda.fecha = fecha;
+  } else {
+    deudas.push({ id: generarId("deuda"), nombre, monto, estado, fecha });
+  }
 
-  this.reset();
+  cancelarEdicionRegistro("deuda");
   renderAll();
   showToast();
 });
@@ -594,16 +727,25 @@ document.getElementById("form-compra-cuotas").addEventListener("submit", functio
     return;
   }
 
-  comprasCuotas.push({
-    id: generarId("compra"),
-    nombre,
-    montoTotal,
-    cantidadCuotas,
-    fechaInicio,
-    cuotasPagadas: 0
-  });
+  if (compraEditandoId) {
+    const compra = comprasCuotas.find((item) => item.id === compraEditandoId);
+    compra.nombre = nombre;
+    compra.montoTotal = montoTotal;
+    compra.cantidadCuotas = cantidadCuotas;
+    compra.fechaInicio = fechaInicio;
+    compra.cuotasPagadas = Math.min(compra.cuotasPagadas, cantidadCuotas);
+  } else {
+    comprasCuotas.push({
+      id: generarId("compra"),
+      nombre,
+      montoTotal,
+      cantidadCuotas,
+      fechaInicio,
+      cuotasPagadas: 0
+    });
+  }
 
-  this.reset();
+  cancelarEdicionCompra();
   renderAll();
   showToast();
 });
@@ -611,6 +753,16 @@ document.getElementById("form-compra-cuotas").addEventListener("submit", functio
 document.getElementById("btn-reiniciar-datos").addEventListener("click", reiniciarDatos);
 document.getElementById("filtro-categoria-gastos").addEventListener("change", renderGastos);
 document.getElementById("filtro-mes-cuotas").addEventListener("change", renderComprasCuotas);
+document.getElementById("btn-cancelar-compra").addEventListener("click", cancelarEdicionCompra);
+document.getElementById("btn-cancelar-ingreso").addEventListener("click", function () {
+  cancelarEdicionRegistro("ingreso");
+});
+document.getElementById("btn-cancelar-gasto").addEventListener("click", function () {
+  cancelarEdicionRegistro("gasto");
+});
+document.getElementById("btn-cancelar-deuda").addEventListener("click", function () {
+  cancelarEdicionRegistro("deuda");
+});
 
 cargarDatos();
 renderAll();

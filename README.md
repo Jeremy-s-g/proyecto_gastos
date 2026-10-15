@@ -305,9 +305,13 @@ Durante esta sesion:
 - cada cuota muestra numero, fecha, monto y estado de pago.
 - se agrego el boton `Deshacer pago` para corregir la ultima cuota marcada.
 - se agrego un filtro mensual para revisar las cuotas de un periodo especifico.
+- se agrego al resumen el total pendiente de las compras en cuotas.
+- se agrego la edicion de compras en cuotas desde el formulario existente.
+- se agrego la opcion de cancelar una edicion sin guardar cambios.
+- se agrego la edicion de ingresos, gastos y deudas desde sus formularios.
 
 La informacion se guarda en `localStorage` y ahora se muestra en pantalla junto con el progreso y la fecha estimada de termino.
 
 Proximo paso:
 
-- mejorar el resumen para mostrar compromisos proximos.
+- agregar busqueda por nombre y filtros adicionales.

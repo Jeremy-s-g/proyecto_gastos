@@ -44,6 +44,10 @@
             <span>Ahorro Meta</span>
             <strong id="balance-goal">0%</strong>
           </div>
+          <div class="metric">
+            <span>Cuotas Pendientes</span>
+            <strong id="balance-installments">$0</strong>
+          </div>
         </div>
       </section>
 
@@ -68,7 +72,8 @@
                 <input type="date" id="input-fecha-ingreso" required>
               </div>
               <p class="mensaje-error" id="error-ingreso"></p>
-              <button type="submit">Agregar</button>
+              <button type="submit" id="btn-submit-ingreso">Agregar</button>
+              <button type="button" id="btn-cancelar-ingreso" class="cancel-button" hidden>Cancelar</button>
             </form>
           </div>
         </article>
@@ -113,9 +118,10 @@
                   <option value="Transporte">Transporte</option>
                   <option value="Otros">Otros</option>
                 </select>
-                <button type="submit">OK</button>
+                <button type="submit" id="btn-submit-gasto">OK</button>
               </div>
               <p class="mensaje-error" id="error-gasto"></p>
+              <button type="button" id="btn-cancelar-gasto" class="cancel-button" hidden>Cancelar</button>
             </form>
           </div>
         </article>
@@ -146,9 +152,10 @@
                   <option value="Pagando">Pagando</option>
                   <option value="Atrasado">Atrasado</option>
                 </select>
-                <button type="submit">Agregar</button>
+                <button type="submit" id="btn-submit-deuda">Agregar</button>
               </div>
               <p class="mensaje-error" id="error-deuda"></p>
+              <button type="button" id="btn-cancelar-deuda" class="cancel-button" hidden>Cancelar</button>
             </form>
           </div>
         </article>
@@ -175,7 +182,10 @@
             <input type="date" id="input-fecha-compra" required>
           </div>
           <p class="mensaje-error" id="error-compra-cuotas"></p>
-          <button type="submit">Agregar compra</button>
+          <div class="form-actions">
+            <button type="submit" id="btn-submit-compra">Agregar compra</button>
+            <button type="button" id="btn-cancelar-compra" class="cancel-button" hidden>Cancelar</button>
+          </div>
         </form>
       </section>
 

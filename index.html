@@ -128,65 +128,42 @@
 
         <article class="finance-card">
           <div class="card-header">
-            <h2>Deudas</h2>
+            <h2>Creditos/Compras en cuotas</h2>
             <span class="material-symbols-outlined muted">credit_card</span>
           </div>
 
-          <div class="item-list" id="lista-deudas"></div>
+          <div class="card-filter">
+            <label for="filtro-mes-creditos">Filtrar por mes</label>
+            <input type="month" id="filtro-mes-creditos">
+          </div>
+
+          <div class="item-list" id="lista-creditos"></div>
 
           <div class="card-footer">
             <div class="total-row">
-              <span>Total Deuda</span>
-              <strong id="total-deudas">$0</strong>
+              <span>Total Creditos</span>
+              <strong id="total-creditos">$0</strong>
             </div>
-            <form id="form-deuda" class="compact-form">
+            <form id="form-credito" class="compact-form">
               <div class="form-grid">
-                <input type="text" id="input-nombre-deuda" placeholder="Entidad" required>
-                <input type="number" id="input-monto-deuda" placeholder="Monto" required>
-                <input type="date" id="input-fecha-deuda" required>
+                <input type="text" id="input-nombre-credito" placeholder="Nombre" required>
+                <input type="number" id="input-monto-credito" placeholder="Monto total" required>
+                <input type="number" id="input-cantidad-cuotas-credito" placeholder="Cantidad de cuotas" required>
+                <input type="date" id="input-fecha-credito" required>
               </div>
               <div class="form-grid form-grid-action">
-                <select id="input-estado-deuda" required>
-                  <option value="">Estado</option>
-                  <option value="Al dia">Al dia</option>
-                  <option value="Pagando">Pagando</option>
-                  <option value="Atrasado">Atrasado</option>
+                <select id="input-tipo-credito" required>
+                  <option value="">Categoria</option>
+                  <option value="Credito">Credito</option>
+                  <option value="Compra en cuota">Compra en cuota</option>
                 </select>
-                <button type="submit" id="btn-submit-deuda">Agregar</button>
+                <button type="submit" id="btn-submit-credito">Agregar</button>
               </div>
-              <p class="mensaje-error" id="error-deuda"></p>
-              <button type="button" id="btn-cancelar-deuda" class="cancel-button" hidden>Cancelar</button>
+              <p class="mensaje-error" id="error-credito"></p>
+              <button type="button" id="btn-cancelar-credito" class="cancel-button" hidden>Cancelar</button>
             </form>
           </div>
         </article>
-      </section>
-
-      <section class="finance-card installment-card" aria-labelledby="cuotas-titulo">
-        <div class="card-header">
-          <h2 id="cuotas-titulo">Compras en cuotas</h2>
-          <span class="material-symbols-outlined muted">calendar_month</span>
-        </div>
-
-        <div class="card-filter">
-          <label for="filtro-mes-cuotas">Filtrar por mes</label>
-          <input type="month" id="filtro-mes-cuotas">
-        </div>
-
-        <div class="item-list" id="lista-compras-cuotas"></div>
-
-        <form id="form-compra-cuotas" class="compact-form">
-          <div class="form-grid">
-            <input type="text" id="input-nombre-compra" placeholder="Compra" required>
-            <input type="number" id="input-monto-compra" placeholder="Monto total" required>
-            <input type="number" id="input-cantidad-cuotas" placeholder="Cantidad de cuotas" required>
-            <input type="date" id="input-fecha-compra" required>
-          </div>
-          <p class="mensaje-error" id="error-compra-cuotas"></p>
-          <div class="form-actions">
-            <button type="submit" id="btn-submit-compra">Agregar compra</button>
-            <button type="button" id="btn-cancelar-compra" class="cancel-button" hidden>Cancelar</button>
-          </div>
-        </form>
       </section>
 
       <div class="toast" id="interaction-overlay" role="status">Cambios guardados</div>

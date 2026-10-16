@@ -342,6 +342,18 @@ a {
   padding: 16px;
 }
 
+.credit-group + .credit-group {
+  margin-top: 18px;
+}
+
+.credit-group-title {
+  margin: 0 0 8px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
 .empty-state {
   min-height: 180px;
   display: grid;
@@ -372,6 +384,18 @@ a {
 .finance-item.removing {
   opacity: 0;
   transform: translateX(20px);
+}
+
+.credit-item {
+  display: block;
+  padding: 12px;
+}
+
+.credit-item-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
 }
 
 .item-main {
@@ -427,6 +451,55 @@ a {
   margin-top: 8px;
   padding-top: 8px;
   border-top: 1px solid var(--outline-variant);
+}
+
+.credit-actions {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  width: 150px;
+  gap: 8px;
+}
+
+.credit-actions .payment-button,
+.credit-actions .edit-button,
+.credit-actions .undo-payment-button {
+  width: 100%;
+}
+
+.credit-actions .delete-button {
+  align-self: flex-end;
+}
+
+.installment-details {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--outline-variant);
+}
+
+.installment-details summary {
+  cursor: pointer;
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 800;
+  list-style-position: inside;
+}
+
+.installment-details summary:hover {
+  color: var(--primary-strong);
+}
+
+.installment-details > span {
+  display: block;
+  color: var(--outline);
+  font-size: 10px;
+  line-height: 16px;
+}
+
+.installment-details .installment-history {
+  margin-top: 10px;
+  padding-top: 0;
+  border-top: 0;
 }
 
 .installment-history .paid {
@@ -796,6 +869,15 @@ select.input-error {
 
   .item-actions {
     gap: 8px;
+  }
+
+  .credit-item-header {
+    flex-direction: column;
+  }
+
+  .credit-actions {
+    justify-content: flex-start;
+    width: 100%;
   }
 
   .delete-button {

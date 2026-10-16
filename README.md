@@ -309,6 +309,13 @@ Durante esta sesion:
 - se agrego la edicion de compras en cuotas desde el formulario existente.
 - se agrego la opcion de cancelar una edicion sin guardar cambios.
 - se agrego la edicion de ingresos, gastos y deudas desde sus formularios.
+- se unificaron deudas y compras en cuotas en la seccion `Creditos/Compras en cuotas`;
+- se agregaron las categorias `Credito` y `Compra en cuota`;
+- los registros ahora se muestran agrupados por categoria;
+- se agrego una migracion para conservar datos antiguos de `deudas` y `comprasCuotas`.
+- se reorganizo cada registro para mostrar un resumen compacto y un detalle de cuotas desplegable;
+- los botones de cada registro ahora tienen un espacio propio y se adaptan mejor a pantallas pequenas.
+- se ajusto la tarjeta para mostrar los datos a la izquierda y el monto con los botones en una columna vertical a la derecha.
 
 La informacion se guarda en `localStorage` y ahora se muestra en pantalla junto con el progreso y la fecha estimada de termino.
 

@@ -1,8 +1,7 @@
 let ingresos = [];
 let gastos = [];
-let deudas = [];
-let comprasCuotas = [];
-let compraEditandoId = null;
+let creditos = [];
+let creditoEditandoId = null;
 let registroEditando = { tipo: null, id: null };
 let toastTimer = null;
 
@@ -22,16 +21,29 @@ function cargarDatosIniciales() {
     { id: generarId("gasto"), nombre: "Seguro medico", monto: 45000, categoria: "Otros", fecha: "2026-08-15" }
   ];
 
-  deudas = [
-    { id: generarId("deuda"), nombre: "Tarjeta de credito", monto: 200000, estado: "Pagando", fecha: "2026-08-03" },
-    { id: generarId("deuda"), nombre: "Credito de consumo", monto: 500000, estado: "Atrasado", fecha: "2026-08-06" },
-    { id: generarId("deuda"), nombre: "Compra en cuotas", monto: 120000, estado: "Al dia", fecha: "2026-08-11" }
-  ];
-
-  comprasCuotas = [
+  creditos = [
     {
-      id: generarId("compra"),
+      id: generarId("credito"),
+      nombre: "Tarjeta de credito",
+      tipo: "Credito",
+      montoTotal: 600000,
+      cantidadCuotas: 12,
+      fechaInicio: "2026-08-03",
+      cuotasPagadas: 2
+    },
+    {
+      id: generarId("credito"),
+      nombre: "Credito de consumo",
+      tipo: "Credito",
+      montoTotal: 500000,
+      cantidadCuotas: 10,
+      fechaInicio: "2026-08-06",
+      cuotasPagadas: 1
+    },
+    {
+      id: generarId("credito"),
       nombre: "Refrigerador",
+      tipo: "Compra en cuota",
       montoTotal: 600000,
       cantidadCuotas: 6,
       fechaInicio: "2026-09-01",
@@ -48,8 +60,7 @@ function cargarDatos() {
       const datos = JSON.parse(datosGuardados);
       ingresos = datos.ingresos || [];
       gastos = datos.gastos || [];
-      deudas = datos.deudas || [];
-      comprasCuotas = datos.comprasCuotas || [];
+      creditos = datos.creditos || migrarCreditos(datos.deudas, datos.comprasCuotas);
     } catch (error) {
       cargarDatosIniciales();
     }
@@ -59,7 +70,26 @@ function cargarDatos() {
 }
 
 function guardarDatos() {
-  localStorage.setItem("datos", JSON.stringify({ ingresos, gastos, deudas, comprasCuotas }));
+  localStorage.setItem("datos", JSON.stringify({ ingresos, gastos, creditos }));
+}
+
+function migrarCreditos(deudasGuardadas = [], comprasGuardadas = []) {
+  const creditosMigrados = deudasGuardadas.map((deuda) => ({
+    id: deuda.id || generarId("credito"),
+    nombre: deuda.nombre,
+    tipo: "Credito",
+    montoTotal: deuda.monto || deuda.montoTotal,
+    cantidadCuotas: 1,
+    fechaInicio: deuda.fecha || deuda.fechaInicio,
+    cuotasPagadas: 0
+  }));
+
+  return creditosMigrados.concat(
+    comprasGuardadas.map((compra) => ({
+      ...compra,
+      tipo: compra.tipo || "Compra en cuota"
+    }))
+  );
 }
 
 function formatearMoneda(monto) {
@@ -77,9 +107,9 @@ function calcularTotal(array) {
 function calcularTotalCuotasPendientes() {
   let total = 0;
 
-  for (const compra of comprasCuotas) {
-    const valorCuota = Math.round(compra.montoTotal / compra.cantidadCuotas);
-    const cuotasRestantes = Math.max(compra.cantidadCuotas - compra.cuotasPagadas, 0);
+  for (const credito of creditos) {
+    const valorCuota = Math.round(credito.montoTotal / credito.cantidadCuotas);
+    const cuotasRestantes = Math.max(credito.cantidadCuotas - credito.cuotasPagadas, 0);
     total = total + valorCuota * cuotasRestantes;
   }
 
@@ -124,24 +154,25 @@ function mostrarError(id, mensaje, campoId) {
   }
 }
 
-function iniciarEdicionCompra(compra) {
-  compraEditandoId = compra.id;
-  document.getElementById("input-nombre-compra").value = compra.nombre;
-  document.getElementById("input-monto-compra").value = compra.montoTotal;
-  document.getElementById("input-cantidad-cuotas").value = compra.cantidadCuotas;
-  document.getElementById("input-fecha-compra").value = compra.fechaInicio;
-  document.getElementById("btn-submit-compra").textContent = "Guardar cambios";
-  document.getElementById("btn-cancelar-compra").hidden = false;
-  document.getElementById("form-compra-cuotas").scrollIntoView({ behavior: "smooth", block: "center" });
+function iniciarEdicionCredito(credito) {
+  creditoEditandoId = credito.id;
+  document.getElementById("input-nombre-credito").value = credito.nombre;
+  document.getElementById("input-monto-credito").value = credito.montoTotal;
+  document.getElementById("input-cantidad-cuotas-credito").value = credito.cantidadCuotas;
+  document.getElementById("input-fecha-credito").value = credito.fechaInicio;
+  document.getElementById("input-tipo-credito").value = credito.tipo;
+  document.getElementById("btn-submit-credito").textContent = "Guardar cambios";
+  document.getElementById("btn-cancelar-credito").hidden = false;
+  document.getElementById("form-credito").scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
-function cancelarEdicionCompra() {
-  compraEditandoId = null;
-  document.getElementById("form-compra-cuotas").reset();
-  document.getElementById("btn-submit-compra").textContent = "Agregar compra";
-  document.getElementById("btn-cancelar-compra").hidden = true;
-  limpiarErrores("form-compra-cuotas");
-  mostrarError("error-compra-cuotas", "");
+function cancelarEdicionCredito() {
+  creditoEditandoId = null;
+  document.getElementById("form-credito").reset();
+  document.getElementById("btn-submit-credito").textContent = "Agregar";
+  document.getElementById("btn-cancelar-credito").hidden = true;
+  limpiarErrores("form-credito");
+  mostrarError("error-credito", "");
 }
 
 function iniciarEdicionRegistro(tipo, registro) {
@@ -366,155 +397,133 @@ function estadoClase(estado) {
   return "";
 }
 
-function renderDeudas() {
-  const listaDeudas = document.getElementById("lista-deudas");
-
-  if (deudas.length === 0) {
-    renderEmptyState(listaDeudas, "Sin deudas pendientes.");
-    return;
-  }
-
-  listaDeudas.innerHTML = "";
-
-  for (let i = 0; i < deudas.length; i++) {
-    const deuda = deudas[i];
-    const estadoVisual = deuda.estado === "Atrasado" ? "debt-late" : "debt-ok";
-    const fila = crearElemento("div", `finance-item ${estadoVisual}`);
-    const main = crearElemento("div", "item-main");
-    const copy = crearElemento("div", "item-copy");
-    const actions = crearElemento("div", "item-actions");
-
-    copy.appendChild(crearElemento("strong", "", deuda.nombre));
-    copy.appendChild(crearElemento("span", estadoClase(deuda.estado), deuda.estado));
-
-    if (deuda.fecha) {
-      copy.appendChild(crearElemento("span", "", `Fecha: ${formatearFecha(deuda.fecha)}`));
-    }
-
-    main.appendChild(copy);
-
-    actions.appendChild(crearElemento("strong", "", formatearMoneda(deuda.monto)));
-    const botonEditar = crearElemento("button", "edit-button", "Editar");
-    botonEditar.type = "button";
-    botonEditar.addEventListener("click", function () {
-      iniciarEdicionRegistro("deuda", deuda);
-    });
-    actions.appendChild(botonEditar);
-    actions.appendChild(crearBotonEliminar(`Eliminar ${deuda.nombre}`, function () {
-      deudas = deuda.id
-        ? deudas.filter((item) => item.id !== deuda.id)
-        : deudas.filter((item, index) => index !== i);
-    }));
-
-    fila.appendChild(main);
-    fila.appendChild(actions);
-    listaDeudas.appendChild(fila);
-  }
-}
-
-function renderComprasCuotas() {
-  const listaCompras = document.getElementById("lista-compras-cuotas");
-  const filtroMes = document.getElementById("filtro-mes-cuotas").value;
+function renderCreditos() {
+  const listaCreditos = document.getElementById("lista-creditos");
+  const filtroMes = document.getElementById("filtro-mes-creditos").value;
   let cuotasMostradas = 0;
 
-  if (comprasCuotas.length === 0) {
-    renderEmptyState(listaCompras, "Sin compras en cuotas.");
+  if (creditos.length === 0) {
+    renderEmptyState(listaCreditos, "Sin creditos registrados.");
     return;
   }
 
-  listaCompras.innerHTML = "";
+  listaCreditos.innerHTML = "";
 
-  for (const compra of comprasCuotas) {
-    const valorCuota = Math.round(compra.montoTotal / compra.cantidadCuotas);
-    const cuotasRestantes = Math.max(compra.cantidadCuotas - compra.cuotasPagadas, 0);
-    const fechaTermino = calcularFechaTermino(compra.fechaInicio, compra.cantidadCuotas);
-    const historial = [];
-    const fila = crearElemento("div", "finance-item");
-    const copy = crearElemento("div", "item-copy");
-    const actions = crearElemento("div", "item-actions");
-    const botonPago = crearElemento("button", "payment-button", "Pagar cuota");
-    const botonDeshacer = crearElemento("button", "undo-payment-button", "Deshacer pago");
-    const botonEditar = crearElemento("button", "edit-button", "Editar");
+  for (const tipo of ["Credito", "Compra en cuota"]) {
+    const grupo = crearElemento("div", "credit-group");
+    const creditosGrupo = creditos.filter((credito) => credito.tipo === tipo);
+    let grupoMostrado = false;
 
-    botonPago.type = "button";
-    botonPago.disabled = compra.cuotasPagadas >= compra.cantidadCuotas;
-    botonPago.addEventListener("click", function () {
-      compra.cuotasPagadas += 1;
-      renderAll();
-      showToast();
-    });
+    for (const credito of creditosGrupo) {
+      const valorCuota = Math.round(credito.montoTotal / credito.cantidadCuotas);
+      const cuotasRestantes = Math.max(credito.cantidadCuotas - credito.cuotasPagadas, 0);
+      const fechaTermino = calcularFechaTermino(credito.fechaInicio, credito.cantidadCuotas);
+      const historial = [];
 
-    botonDeshacer.type = "button";
-    botonDeshacer.disabled = compra.cuotasPagadas === 0;
-    botonDeshacer.addEventListener("click", function () {
-      if (compra.cuotasPagadas === 0) {
-        return;
+      for (let numero = 1; numero <= credito.cantidadCuotas; numero++) {
+        historial.push({
+          numero,
+          fecha: calcularFechaCuota(credito.fechaInicio, numero),
+          monto: valorCuota,
+          pagada: numero <= credito.cuotasPagadas
+        });
       }
 
-      compra.cuotasPagadas -= 1;
-      renderAll();
-      showToast();
-    });
+      const cuotasVisibles = filtroMes
+        ? historial.filter((cuota) => cuota.fecha.startsWith(filtroMes))
+        : historial;
 
-    botonEditar.type = "button";
-    botonEditar.addEventListener("click", function () {
-      iniciarEdicionCompra(compra);
-    });
+      if (cuotasVisibles.length === 0) {
+        continue;
+      }
 
-    copy.appendChild(crearElemento("strong", "", compra.nombre));
-    copy.appendChild(crearElemento("span", "", `Cuota mensual: ${formatearMoneda(valorCuota)}`));
-    copy.appendChild(crearElemento("span", "", `Cuotas pagadas: ${compra.cuotasPagadas} de ${compra.cantidadCuotas}`));
-    copy.appendChild(crearElemento("span", "", `Cuotas restantes: ${cuotasRestantes}`));
-    copy.appendChild(crearElemento("span", "", `Inicio: ${formatearFecha(compra.fechaInicio)}`));
-    copy.appendChild(crearElemento("span", "", `Termina: ${formatearFecha(fechaTermino)}`));
+      if (!grupoMostrado) {
+        grupo.appendChild(crearElemento("h3", "credit-group-title", tipo));
+        grupoMostrado = true;
+      }
 
-    for (let numero = 1; numero <= compra.cantidadCuotas; numero++) {
-      historial.push({
-        numero,
-        fecha: calcularFechaCuota(compra.fechaInicio, numero),
-        monto: valorCuota,
-        pagada: numero <= compra.cuotasPagadas
+      const fila = crearElemento("div", "finance-item credit-item");
+      const encabezado = crearElemento("div", "credit-item-header");
+      const main = crearElemento("div", "item-main");
+      const copy = crearElemento("div", "item-copy");
+      const actions = crearElemento("div", "item-actions credit-actions");
+      const botonPago = crearElemento("button", "payment-button", "Pagar cuota");
+      const botonDeshacer = crearElemento("button", "undo-payment-button", "Deshacer pago");
+      const botonEditar = crearElemento("button", "edit-button", "Editar");
+
+      botonPago.type = "button";
+      botonPago.disabled = credito.cuotasPagadas >= credito.cantidadCuotas;
+      botonPago.addEventListener("click", function () {
+        credito.cuotasPagadas += 1;
+        renderAll();
+        showToast();
       });
+
+      botonDeshacer.type = "button";
+      botonDeshacer.disabled = credito.cuotasPagadas === 0;
+      botonDeshacer.addEventListener("click", function () {
+        if (credito.cuotasPagadas === 0) {
+          return;
+        }
+
+        credito.cuotasPagadas -= 1;
+        renderAll();
+        showToast();
+      });
+
+      botonEditar.type = "button";
+      botonEditar.addEventListener("click", function () {
+        iniciarEdicionCredito(credito);
+      });
+
+      copy.appendChild(crearElemento("strong", "", credito.nombre));
+      copy.appendChild(crearElemento("span", "", `Tipo de gasto: Cuota`));
+      copy.appendChild(crearElemento("span", "", `Categoria: ${credito.tipo}`));
+      copy.appendChild(crearElemento("span", "", `Fecha: ${formatearFecha(credito.fechaInicio)}`));
+
+      main.appendChild(copy);
+
+      const historialElement = crearElemento("div", "installment-history");
+      for (const cuota of cuotasVisibles) {
+        const estado = cuota.pagada ? "paid" : "pending";
+        const texto = `Cuota ${cuota.numero} - ${formatearFecha(cuota.fecha)} - ${formatearMoneda(cuota.monto)} - ${cuota.pagada ? "Pagada" : "Pendiente"}`;
+        historialElement.appendChild(crearElemento("span", estado, texto));
+      }
+
+      cuotasMostradas += cuotasVisibles.length;
+      const detalle = document.createElement("details");
+      detalle.className = "installment-details";
+      const resumenDetalle = document.createElement("summary");
+      resumenDetalle.textContent = `Ver detalle de cuotas (${cuotasVisibles.length})`;
+      detalle.appendChild(resumenDetalle);
+      detalle.appendChild(crearElemento("span", "", `Inicio: ${formatearFecha(credito.fechaInicio)}`));
+      detalle.appendChild(crearElemento("span", "", `Termina: ${formatearFecha(fechaTermino)}`));
+      detalle.appendChild(historialElement);
+      actions.appendChild(crearElemento("strong", "positive", formatearMoneda(credito.montoTotal)));
+      actions.appendChild(botonEditar);
+      actions.appendChild(botonPago);
+      actions.appendChild(botonDeshacer);
+      actions.appendChild(crearBotonEliminar(`Eliminar ${credito.nombre}`, function () {
+        creditos = creditos.filter((item) => item.id !== credito.id);
+      }));
+      encabezado.appendChild(main);
+      encabezado.appendChild(actions);
+      fila.appendChild(encabezado);
+      fila.appendChild(detalle);
+      grupo.appendChild(fila);
     }
 
-    const cuotasVisibles = filtroMes
-      ? historial.filter((cuota) => cuota.fecha.startsWith(filtroMes))
-      : historial;
-
-    if (cuotasVisibles.length === 0) {
-      continue;
+    if (grupoMostrado) {
+      listaCreditos.appendChild(grupo);
     }
-
-    const historialElement = crearElemento("div", "installment-history");
-
-    for (const cuota of cuotasVisibles) {
-      const estado = cuota.pagada ? "paid" : "pending";
-      const texto = `Cuota ${cuota.numero} - ${formatearFecha(cuota.fecha)} - ${formatearMoneda(cuota.monto)} - ${cuota.pagada ? "Pagada" : "Pendiente"}`;
-      historialElement.appendChild(crearElemento("span", estado, texto));
-    }
-
-    cuotasMostradas += cuotasVisibles.length;
-
-    copy.appendChild(historialElement);
-
-    actions.appendChild(botonEditar);
-    actions.appendChild(botonPago);
-    actions.appendChild(botonDeshacer);
-    actions.appendChild(crearBotonEliminar(`Eliminar ${compra.nombre}`, function () {
-      comprasCuotas = comprasCuotas.filter((item) => item.id !== compra.id);
-    }));
-
-    fila.appendChild(copy);
-    fila.appendChild(actions);
-    listaCompras.appendChild(fila);
   }
 
   if (cuotasMostradas === 0) {
-    renderEmptyState(listaCompras, "No hay cuotas para el mes seleccionado.");
+    renderEmptyState(listaCreditos, "No hay cuotas para el mes seleccionado.");
   }
 }
 
-function actualizarResumen(totalIngresos, totalGastos, totalDeudas, balance) {
+function actualizarResumen(totalIngresos, totalGastos, totalCreditos, balance) {
   const balanceTotalEl = document.getElementById("balance-total");
   const balanceLineEl = balanceTotalEl.closest(".balance-line");
   const balanceIconEl = document.getElementById("balance-icon");
@@ -536,20 +545,19 @@ function actualizarResumen(totalIngresos, totalGastos, totalDeudas, balance) {
 
   document.getElementById("total-ingresos").textContent = formatearMoneda(totalIngresos);
   document.getElementById("total-gastos").textContent = formatearMoneda(totalGastos);
-  document.getElementById("total-deudas").textContent = formatearMoneda(totalDeudas);
+  document.getElementById("total-creditos").textContent = formatearMoneda(totalCreditos);
 }
 
 function renderAll() {
   const totalGastos = calcularTotal(gastos);
   const totalIngresos = calcularTotal(ingresos);
-  const totalDeudas = calcularTotal(deudas);
+  const totalCreditos = calcularTotalCuotasPendientes();
   const balance = totalIngresos - totalGastos;
 
-  actualizarResumen(totalIngresos, totalGastos, totalDeudas, balance);
+  actualizarResumen(totalIngresos, totalGastos, totalCreditos, balance);
   renderIngresos();
   renderGastos();
-  renderDeudas();
-  renderComprasCuotas();
+  renderCreditos();
   guardarDatos();
 }
 
@@ -650,94 +658,56 @@ document.getElementById("form-ingreso").addEventListener("submit", function (e) 
   showToast();
 });
 
-document.getElementById("form-deuda").addEventListener("submit", function (e) {
+document.getElementById("form-credito").addEventListener("submit", function (e) {
   e.preventDefault();
 
-  limpiarErrores("form-deuda");
-  mostrarError("error-deuda", "");
+  limpiarErrores("form-credito");
+  mostrarError("error-credito", "");
 
-  const nombre = document.getElementById("input-nombre-deuda").value.trim();
-  const monto = Number(document.getElementById("input-monto-deuda").value);
-  const estado = document.getElementById("input-estado-deuda").value;
-  const fecha = document.getElementById("input-fecha-deuda").value;
-
-  if (!nombre) {
-    mostrarError("error-deuda", "El nombre de la deuda es obligatorio.", "input-nombre-deuda");
-    return;
-  }
-
-  if (Number.isNaN(monto) || monto <= 0) {
-    mostrarError("error-deuda", "El monto debe ser mayor que cero.", "input-monto-deuda");
-    return;
-  }
-
-  if (!estado) {
-    mostrarError("error-deuda", "El estado es obligatorio.", "input-estado-deuda");
-    return;
-  }
-
-  if (!fecha) {
-    mostrarError("error-deuda", "La fecha es obligatoria.", "input-fecha-deuda");
-    return;
-  }
-
-  if (registroEditando.tipo === "deuda") {
-    const deuda = deudas.find((item) => item.id === registroEditando.id);
-    deuda.nombre = nombre;
-    deuda.monto = monto;
-    deuda.estado = estado;
-    deuda.fecha = fecha;
-  } else {
-    deudas.push({ id: generarId("deuda"), nombre, monto, estado, fecha });
-  }
-
-  cancelarEdicionRegistro("deuda");
-  renderAll();
-  showToast();
-});
-
-document.getElementById("form-compra-cuotas").addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  limpiarErrores("form-compra-cuotas");
-  mostrarError("error-compra-cuotas", "");
-
-  const nombre = document.getElementById("input-nombre-compra").value.trim();
-  const montoTotal = Number(document.getElementById("input-monto-compra").value);
-  const cantidadCuotas = Number(document.getElementById("input-cantidad-cuotas").value);
-  const fechaInicio = document.getElementById("input-fecha-compra").value;
+  const nombre = document.getElementById("input-nombre-credito").value.trim();
+  const montoTotal = Number(document.getElementById("input-monto-credito").value);
+  const cantidadCuotas = Number(document.getElementById("input-cantidad-cuotas-credito").value);
+  const fechaInicio = document.getElementById("input-fecha-credito").value;
+  const tipo = document.getElementById("input-tipo-credito").value;
 
   if (!nombre || !/[A-Za-zÁÉÍÓÚáéíóúÑñ]/.test(nombre)) {
-    mostrarError("error-compra-cuotas", "El nombre debe contener al menos una letra.", "input-nombre-compra");
+    mostrarError("error-credito", "El nombre debe contener al menos una letra.", "input-nombre-credito");
     return;
   }
 
   if (Number.isNaN(montoTotal) || montoTotal <= 0) {
-    mostrarError("error-compra-cuotas", "El monto debe ser mayor que cero.", "input-monto-compra");
+    mostrarError("error-credito", "El monto debe ser mayor que cero.", "input-monto-credito");
     return;
   }
 
   if (!Number.isInteger(cantidadCuotas) || cantidadCuotas <= 0) {
-    mostrarError("error-compra-cuotas", "La cantidad de cuotas debe ser un numero entero mayor que cero.", "input-cantidad-cuotas");
+    mostrarError("error-credito", "La cantidad de cuotas debe ser un numero entero mayor que cero.", "input-cantidad-cuotas-credito");
     return;
   }
 
   if (!fechaInicio) {
-    mostrarError("error-compra-cuotas", "La fecha de inicio es obligatoria.", "input-fecha-compra");
+    mostrarError("error-credito", "La fecha de inicio es obligatoria.", "input-fecha-credito");
     return;
   }
 
-  if (compraEditandoId) {
-    const compra = comprasCuotas.find((item) => item.id === compraEditandoId);
-    compra.nombre = nombre;
-    compra.montoTotal = montoTotal;
-    compra.cantidadCuotas = cantidadCuotas;
-    compra.fechaInicio = fechaInicio;
-    compra.cuotasPagadas = Math.min(compra.cuotasPagadas, cantidadCuotas);
+  if (!tipo) {
+    mostrarError("error-credito", "La categoria es obligatoria.", "input-tipo-credito");
+    return;
+  }
+
+  if (creditoEditandoId) {
+    const credito = creditos.find((item) => item.id === creditoEditandoId);
+    credito.nombre = nombre;
+    credito.montoTotal = montoTotal;
+    credito.cantidadCuotas = cantidadCuotas;
+    credito.fechaInicio = fechaInicio;
+    credito.tipo = tipo;
+    credito.cuotasPagadas = Math.min(credito.cuotasPagadas, cantidadCuotas);
   } else {
-    comprasCuotas.push({
-      id: generarId("compra"),
+    creditos.push({
+      id: generarId("credito"),
       nombre,
+      tipo,
       montoTotal,
       cantidadCuotas,
       fechaInicio,
@@ -745,23 +715,20 @@ document.getElementById("form-compra-cuotas").addEventListener("submit", functio
     });
   }
 
-  cancelarEdicionCompra();
+  cancelarEdicionCredito();
   renderAll();
   showToast();
 });
 
 document.getElementById("btn-reiniciar-datos").addEventListener("click", reiniciarDatos);
 document.getElementById("filtro-categoria-gastos").addEventListener("change", renderGastos);
-document.getElementById("filtro-mes-cuotas").addEventListener("change", renderComprasCuotas);
-document.getElementById("btn-cancelar-compra").addEventListener("click", cancelarEdicionCompra);
+document.getElementById("filtro-mes-creditos").addEventListener("change", renderCreditos);
+document.getElementById("btn-cancelar-credito").addEventListener("click", cancelarEdicionCredito);
 document.getElementById("btn-cancelar-ingreso").addEventListener("click", function () {
   cancelarEdicionRegistro("ingreso");
 });
 document.getElementById("btn-cancelar-gasto").addEventListener("click", function () {
   cancelarEdicionRegistro("gasto");
-});
-document.getElementById("btn-cancelar-deuda").addEventListener("click", function () {
-  cancelarEdicionRegistro("deuda");
 });
 
 cargarDatos();

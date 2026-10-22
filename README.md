@@ -320,6 +320,8 @@ Durante esta sesion:
 - la busqueda funciona junto con los filtros existentes sin modificar los datos guardados.
 - se agregaron filtros por mes para ingresos y gastos.
 - los listados ahora anuncian sus cambios a lectores de pantalla cuando se aplican filtros o busquedas.
+- se agrego una validacion de estructura al cargar datos desde `localStorage` para evitar errores si una lista no es un array.
+- se ajusto el calculo de cuotas para que la ultima cuota corrija cualquier diferencia de redondeo y el total coincida exactamente.
 
 La informacion se guarda en `localStorage` y ahora se muestra en pantalla junto con el progreso y la fecha estimada de termino.
 

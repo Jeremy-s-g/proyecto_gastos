@@ -58,15 +58,21 @@ function cargarDatos() {
   if (datosGuardados) {
     try {
       const datos = JSON.parse(datosGuardados);
-      ingresos = datos.ingresos || [];
-      gastos = datos.gastos || [];
-      creditos = datos.creditos || migrarCreditos(datos.deudas, datos.comprasCuotas);
+      ingresos = obtenerArraySeguro(datos.ingresos);
+      gastos = obtenerArraySeguro(datos.gastos);
+      creditos = Array.isArray(datos.creditos)
+        ? datos.creditos
+        : migrarCreditos(datos.deudas, datos.comprasCuotas);
     } catch (error) {
       cargarDatosIniciales();
     }
   } else {
     cargarDatosIniciales();
   }
+}
+
+function obtenerArraySeguro(valor) {
+  return Array.isArray(valor) ? valor : [];
 }
 
 function guardarDatos() {
@@ -108,12 +114,38 @@ function calcularTotalCuotasPendientes() {
   let total = 0;
 
   for (const credito of creditos) {
-    const valorCuota = Math.round(credito.montoTotal / credito.cantidadCuotas);
-    const cuotasRestantes = Math.max(credito.cantidadCuotas - credito.cuotasPagadas, 0);
-    total = total + valorCuota * cuotasRestantes;
+    const cuotas = calcularCuotas(credito);
+
+    for (const cuota of cuotas) {
+      if (cuota.numero > credito.cuotasPagadas) {
+        total = total + cuota.monto;
+      }
+    }
   }
 
   return total;
+}
+
+function calcularCuotas(credito) {
+  const cuotas = [];
+  const montoBase = Math.floor(credito.montoTotal / credito.cantidadCuotas);
+  let montoAcumulado = 0;
+
+  for (let numero = 1; numero <= credito.cantidadCuotas; numero++) {
+    const monto = numero === credito.cantidadCuotas
+      ? credito.montoTotal - montoAcumulado
+      : montoBase;
+
+    cuotas.push({
+      numero,
+      fecha: calcularFechaCuota(credito.fechaInicio, numero),
+      monto,
+      pagada: numero <= credito.cuotasPagadas
+    });
+    montoAcumulado = montoAcumulado + monto;
+  }
+
+  return cuotas;
 }
 
 function formatearFecha(fecha) {
@@ -440,19 +472,10 @@ function renderCreditos() {
     let grupoMostrado = false;
 
     for (const credito of creditosGrupo) {
-      const valorCuota = Math.round(credito.montoTotal / credito.cantidadCuotas);
+      const historial = calcularCuotas(credito);
+      const valorCuota = historial.length > 0 ? historial[0].monto : 0;
       const cuotasRestantes = Math.max(credito.cantidadCuotas - credito.cuotasPagadas, 0);
       const fechaTermino = calcularFechaTermino(credito.fechaInicio, credito.cantidadCuotas);
-      const historial = [];
-
-      for (let numero = 1; numero <= credito.cantidadCuotas; numero++) {
-        historial.push({
-          numero,
-          fecha: calcularFechaCuota(credito.fechaInicio, numero),
-          monto: valorCuota,
-          pagada: numero <= credito.cuotasPagadas
-        });
-      }
 
       const cuotasVisibles = filtroMes
         ? historial.filter((cuota) => cuota.fecha.startsWith(filtroMes))

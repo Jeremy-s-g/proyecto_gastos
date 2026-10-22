@@ -58,7 +58,14 @@
             <span class="material-symbols-outlined positive">payments</span>
           </div>
 
-          <div class="item-list" id="lista-ingresos"></div>
+          <div class="card-filter">
+            <label for="busqueda-ingresos">Buscar por nombre</label>
+            <input type="search" id="busqueda-ingresos" placeholder="Buscar ingreso">
+            <label for="filtro-mes-ingresos">Filtrar por mes</label>
+            <input type="month" id="filtro-mes-ingresos">
+          </div>
+
+          <div class="item-list" id="lista-ingresos" aria-live="polite" aria-label="Lista de ingresos"></div>
 
           <div class="card-footer">
             <div class="total-row">
@@ -94,9 +101,13 @@
               <option value="Transporte">Transporte</option>
               <option value="Otros">Otros</option>
             </select>
+            <label for="busqueda-gastos">Buscar por nombre</label>
+            <input type="search" id="busqueda-gastos" placeholder="Buscar gasto">
+            <label for="filtro-mes-gastos">Filtrar por mes</label>
+            <input type="month" id="filtro-mes-gastos">
           </div>
 
-          <div class="item-list" id="lista-gastos"></div>
+          <div class="item-list" id="lista-gastos" aria-live="polite" aria-label="Lista de gastos"></div>
 
           <div class="card-footer">
             <div class="total-row">
@@ -135,9 +146,11 @@
           <div class="card-filter">
             <label for="filtro-mes-creditos">Filtrar por mes</label>
             <input type="month" id="filtro-mes-creditos">
+            <label for="busqueda-creditos">Buscar por nombre</label>
+            <input type="search" id="busqueda-creditos" placeholder="Buscar credito o compra">
           </div>
 
-          <div class="item-list" id="lista-creditos"></div>
+          <div class="item-list" id="lista-creditos" aria-live="polite" aria-label="Lista de creditos y compras en cuotas"></div>
 
           <div class="card-footer">
             <div class="total-row">

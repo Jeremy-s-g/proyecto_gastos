@@ -316,9 +316,13 @@ Durante esta sesion:
 - se reorganizo cada registro para mostrar un resumen compacto y un detalle de cuotas desplegable;
 - los botones de cada registro ahora tienen un espacio propio y se adaptan mejor a pantallas pequenas.
 - se ajusto la tarjeta para mostrar los datos a la izquierda y el monto con los botones en una columna vertical a la derecha.
+- se agrego busqueda por nombre en ingresos, gastos y creditos/compras en cuotas;
+- la busqueda funciona junto con los filtros existentes sin modificar los datos guardados.
+- se agregaron filtros por mes para ingresos y gastos.
+- los listados ahora anuncian sus cambios a lectores de pantalla cuando se aplican filtros o busquedas.
 
 La informacion se guarda en `localStorage` y ahora se muestra en pantalla junto con el progreso y la fecha estimada de termino.
 
 Proximo paso:
 
-- agregar busqueda por nombre y filtros adicionales.
+- mejorar la accesibilidad y los mensajes de estado de los filtros.

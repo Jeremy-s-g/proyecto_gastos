@@ -284,16 +284,27 @@ function renderEmptyState(container, mensaje) {
 
 function renderIngresos() {
   const listaIngresos = document.getElementById("lista-ingresos");
+  const busqueda = document.getElementById("busqueda-ingresos").value.trim().toLowerCase();
+  const filtroMes = document.getElementById("filtro-mes-ingresos").value;
+  const ingresosVisibles = ingresos.filter((ingreso) => {
+    const coincideNombre = ingreso.nombre.toLowerCase().includes(busqueda);
+    const coincideMes = !filtroMes || (ingreso.fecha && ingreso.fecha.startsWith(filtroMes));
+    return coincideNombre && coincideMes;
+  });
 
   if (ingresos.length === 0) {
     renderEmptyState(listaIngresos, "Sin ingresos registrados.");
     return;
   }
 
+  if (ingresosVisibles.length === 0) {
+    renderEmptyState(listaIngresos, "No se encontraron ingresos.");
+    return;
+  }
+
   listaIngresos.innerHTML = "";
 
-  for (let i = 0; i < ingresos.length; i++) {
-    const ingreso = ingresos[i];
+  for (const ingreso of ingresosVisibles) {
     const fila = crearElemento("div", "finance-item");
     const main = crearElemento("div", "item-main");
     const copy = crearElemento("div", "item-copy");
@@ -330,9 +341,16 @@ function renderIngresos() {
 function renderGastos() {
   const listaGastos = document.getElementById("lista-gastos");
   const filtroCategoria = document.getElementById("filtro-categoria-gastos").value;
-  const gastosVisibles = filtroCategoria === "Todas"
+  const busqueda = document.getElementById("busqueda-gastos").value.trim().toLowerCase();
+  const filtroMes = document.getElementById("filtro-mes-gastos").value;
+  const gastosPorCategoria = filtroCategoria === "Todas"
     ? gastos
     : gastos.filter((gasto) => gasto.categoria === filtroCategoria);
+  const gastosVisibles = gastosPorCategoria.filter((gasto) => {
+    const coincideNombre = gasto.nombre.toLowerCase().includes(busqueda);
+    const coincideMes = !filtroMes || (gasto.fecha && gasto.fecha.startsWith(filtroMes));
+    return coincideNombre && coincideMes;
+  });
 
   if (gastos.length === 0) {
     renderEmptyState(listaGastos, "Sin gastos registrados.");
@@ -400,6 +418,8 @@ function estadoClase(estado) {
 function renderCreditos() {
   const listaCreditos = document.getElementById("lista-creditos");
   const filtroMes = document.getElementById("filtro-mes-creditos").value;
+  const busqueda = document.getElementById("busqueda-creditos").value.trim().toLowerCase();
+  const creditosVisibles = creditos.filter((credito) => credito.nombre.toLowerCase().includes(busqueda));
   let cuotasMostradas = 0;
 
   if (creditos.length === 0) {
@@ -407,11 +427,16 @@ function renderCreditos() {
     return;
   }
 
+  if (creditosVisibles.length === 0) {
+    renderEmptyState(listaCreditos, "No se encontraron creditos o compras.");
+    return;
+  }
+
   listaCreditos.innerHTML = "";
 
   for (const tipo of ["Credito", "Compra en cuota"]) {
     const grupo = crearElemento("div", "credit-group");
-    const creditosGrupo = creditos.filter((credito) => credito.tipo === tipo);
+    const creditosGrupo = creditosVisibles.filter((credito) => credito.tipo === tipo);
     let grupoMostrado = false;
 
     for (const credito of creditosGrupo) {
@@ -722,7 +747,12 @@ document.getElementById("form-credito").addEventListener("submit", function (e) 
 
 document.getElementById("btn-reiniciar-datos").addEventListener("click", reiniciarDatos);
 document.getElementById("filtro-categoria-gastos").addEventListener("change", renderGastos);
+document.getElementById("filtro-mes-ingresos").addEventListener("change", renderIngresos);
+document.getElementById("filtro-mes-gastos").addEventListener("change", renderGastos);
 document.getElementById("filtro-mes-creditos").addEventListener("change", renderCreditos);
+document.getElementById("busqueda-ingresos").addEventListener("input", renderIngresos);
+document.getElementById("busqueda-gastos").addEventListener("input", renderGastos);
+document.getElementById("busqueda-creditos").addEventListener("input", renderCreditos);
 document.getElementById("btn-cancelar-credito").addEventListener("click", cancelarEdicionCredito);
 document.getElementById("btn-cancelar-ingreso").addEventListener("click", function () {
   cancelarEdicionRegistro("ingreso");

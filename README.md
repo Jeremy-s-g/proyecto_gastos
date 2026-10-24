@@ -322,6 +322,9 @@ Durante esta sesion:
 - los listados ahora anuncian sus cambios a lectores de pantalla cuando se aplican filtros o busquedas.
 - se agrego una validacion de estructura al cargar datos desde `localStorage` para evitar errores si una lista no es un array.
 - se ajusto el calculo de cuotas para que la ultima cuota corrija cualquier diferencia de redondeo y el total coincida exactamente.
+- se agrego una confirmacion antes de eliminar ingresos, gastos o creditos para evitar eliminaciones accidentales.
+- se ajusto la vista para pantallas muy pequenas, permitiendo que nombres largos ocupen varias lineas sin desordenar los registros.
+- se limpio codigo y estilos antiguos que ya no se usan despues de unificar deudas y compras en cuotas.
 
 La informacion se guarda en `localStorage` y ahora se muestra en pantalla junto con el progreso y la fecha estimada de termino.
 

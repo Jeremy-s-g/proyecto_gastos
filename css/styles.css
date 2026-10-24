@@ -329,11 +329,6 @@ a {
   font-weight: 700;
 }
 
-.installment-card .compact-form {
-  padding: 16px;
-  border-top: 1px solid var(--outline-variant);
-}
-
 .item-list {
   flex: 1 1 auto;
   min-height: 210px;
@@ -614,15 +609,6 @@ a {
 
 .delete-button .material-symbols-outlined {
   font-size: 18px;
-}
-
-.debt-late {
-  border-left: 4px solid var(--negative);
-  background: var(--negative-soft);
-}
-
-.debt-ok {
-  border-left: 4px solid var(--primary);
 }
 
 .card-footer {
@@ -916,6 +902,15 @@ select.input-error {
   .balance-line strong {
     font-size: 30px;
     line-height: 38px;
+  }
+
+  .finance-item {
+    align-items: flex-start;
+  }
+
+  .item-copy strong {
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
   .form-grid,

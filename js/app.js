@@ -221,12 +221,6 @@ function iniciarEdicionRegistro(tipo, registro) {
       monto: "input-monto-gasto",
       categoria: "input-categoria-gasto",
       fecha: "input-fecha-gasto"
-    },
-    deuda: {
-      nombre: "input-nombre-deuda",
-      monto: "input-monto-deuda",
-      estado: "input-estado-deuda",
-      fecha: "input-fecha-deuda"
     }
   }[tipo];
 
@@ -236,10 +230,6 @@ function iniciarEdicionRegistro(tipo, registro) {
 
   if (campos.categoria) {
     document.getElementById(campos.categoria).value = registro.categoria;
-  }
-
-  if (campos.estado) {
-    document.getElementById(campos.estado).value = registro.estado;
   }
 
   document.getElementById(`btn-submit-${tipo}`).textContent = "Guardar cambios";
@@ -297,6 +287,12 @@ function crearBotonEliminar(label, onDelete) {
   boton.innerHTML = '<span class="material-symbols-outlined">delete</span>';
 
   boton.addEventListener("click", function () {
+    const confirmar = confirm(`${label}. Esta accion no se puede deshacer. Continuar?`);
+
+    if (!confirmar) {
+      return;
+    }
+
     const fila = boton.closest(".finance-item");
     fila.classList.add("removing");
     setTimeout(function () {
@@ -435,18 +431,6 @@ function renderGastos() {
   }
 }
 
-function estadoClase(estado) {
-  if (estado === "Al dia") {
-    return "status-positive";
-  }
-
-  if (estado === "Atrasado") {
-    return "status-negative";
-  }
-
-  return "";
-}
-
 function renderCreditos() {
   const listaCreditos = document.getElementById("lista-creditos");
   const filtroMes = document.getElementById("filtro-mes-creditos").value;
@@ -473,8 +457,6 @@ function renderCreditos() {
 
     for (const credito of creditosGrupo) {
       const historial = calcularCuotas(credito);
-      const valorCuota = historial.length > 0 ? historial[0].monto : 0;
-      const cuotasRestantes = Math.max(credito.cantidadCuotas - credito.cuotasPagadas, 0);
       const fechaTermino = calcularFechaTermino(credito.fechaInicio, credito.cantidadCuotas);
 
       const cuotasVisibles = filtroMes

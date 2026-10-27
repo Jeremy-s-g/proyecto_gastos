@@ -1,0 +1,7 @@
+{
+  "name": "proyecto-gastos",
+  "private": true,
+  "scripts": {
+    "test": "node tests/calculos.test.js"
+  }
+}

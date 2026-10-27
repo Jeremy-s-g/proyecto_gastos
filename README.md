@@ -325,6 +325,8 @@ Durante esta sesion:
 - se agrego una confirmacion antes de eliminar ingresos, gastos o creditos para evitar eliminaciones accidentales.
 - se ajusto la vista para pantallas muy pequenas, permitiendo que nombres largos ocupen varias lineas sin desordenar los registros.
 - se limpio codigo y estilos antiguos que ya no se usan despues de unificar deudas y compras en cuotas.
+- se separaron las funciones de calculo para poder probarlas fuera del navegador;
+- se agregaron pruebas basicas para cuotas, totales, estados de pago y fechas.
 
 La informacion se guarda en `localStorage` y ahora se muestra en pantalla junto con el progreso y la fecha estimada de termino.
 

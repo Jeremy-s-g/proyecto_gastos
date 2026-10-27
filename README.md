@@ -327,6 +327,7 @@ Durante esta sesion:
 - se limpio codigo y estilos antiguos que ya no se usan despues de unificar deudas y compras en cuotas.
 - se separaron las funciones de calculo para poder probarlas fuera del navegador;
 - se agregaron pruebas basicas para cuotas, totales, estados de pago y fechas.
+- se agregaron nombres accesibles a los campos de los formularios sin cambiar su apariencia.
 
 La informacion se guarda en `localStorage` y ahora se muestra en pantalla junto con el progreso y la fecha estimada de termino.
 

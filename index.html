@@ -74,9 +74,9 @@
             </div>
             <form id="form-ingreso" class="compact-form">
               <div class="form-grid">
-                <input type="text" id="input-nombre-ingreso" placeholder="Nombre" required>
-                <input type="number" id="input-monto-ingreso" placeholder="Monto" required>
-                <input type="date" id="input-fecha-ingreso" required>
+                <input type="text" id="input-nombre-ingreso" placeholder="Nombre" aria-label="Nombre del ingreso" required>
+                <input type="number" id="input-monto-ingreso" placeholder="Monto" aria-label="Monto del ingreso" required>
+                <input type="date" id="input-fecha-ingreso" aria-label="Fecha del ingreso" required>
               </div>
               <p class="mensaje-error" id="error-ingreso"></p>
               <button type="submit" id="btn-submit-ingreso">Agregar</button>
@@ -116,12 +116,12 @@
             </div>
             <form id="form-gasto" class="compact-form">
               <div class="form-grid">
-                <input type="text" id="input-nombre-gasto" placeholder="Gasto" required>
-                <input type="number" id="input-monto-gasto" placeholder="Monto" required>
-                <input type="date" id="input-fecha-gasto" required>
+                <input type="text" id="input-nombre-gasto" placeholder="Gasto" aria-label="Nombre del gasto" required>
+                <input type="number" id="input-monto-gasto" placeholder="Monto" aria-label="Monto del gasto" required>
+                <input type="date" id="input-fecha-gasto" aria-label="Fecha del gasto" required>
               </div>
               <div class="form-grid form-grid-action">
-                <select id="input-categoria-gasto" required>
+                <select id="input-categoria-gasto" aria-label="Categoria del gasto" required>
                   <option value="">Categoria</option>
                   <option value="Vivienda">Vivienda</option>
                   <option value="Servicios">Servicios</option>
@@ -159,13 +159,13 @@
             </div>
             <form id="form-credito" class="compact-form">
               <div class="form-grid">
-                <input type="text" id="input-nombre-credito" placeholder="Nombre" required>
-                <input type="number" id="input-monto-credito" placeholder="Monto total" required>
-                <input type="number" id="input-cantidad-cuotas-credito" placeholder="Cantidad de cuotas" required>
-                <input type="date" id="input-fecha-credito" required>
+                <input type="text" id="input-nombre-credito" placeholder="Nombre" aria-label="Nombre del credito o compra" required>
+                <input type="number" id="input-monto-credito" placeholder="Monto total" aria-label="Monto total del credito o compra" required>
+                <input type="number" id="input-cantidad-cuotas-credito" placeholder="Cantidad de cuotas" aria-label="Cantidad de cuotas" required>
+                <input type="date" id="input-fecha-credito" aria-label="Fecha de inicio" required>
               </div>
               <div class="form-grid form-grid-action">
-                <select id="input-tipo-credito" required>
+                <select id="input-tipo-credito" aria-label="Categoria del credito o compra" required>
                   <option value="">Categoria</option>
                   <option value="Credito">Credito</option>
                   <option value="Compra en cuota">Compra en cuota</option>

@@ -335,6 +335,8 @@ Durante esta sesion:
 - se agregaron nombres accesibles a los campos de los formularios sin cambiar su apariencia.
 - se separaron las validaciones y la lectura de `localStorage` para probarlas automaticamente;
 - se agregaron pruebas para nombres, montos, fechas, cuotas, arrays y JSON invalido.
+- los mensajes de error de los formularios ahora se anuncian a lectores de pantalla.
+- se preparo un workflow para publicar automaticamente el proyecto en GitHub Pages despues de cada push a `master`.
 
 La informacion se guarda en `localStorage` y ahora se muestra en pantalla junto con el progreso y la fecha estimada de termino.
 

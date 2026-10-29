@@ -155,18 +155,18 @@ Durante este dia se realizo:
 
 ## Objetivo
 
-Construir una aplicacion para organizar ingresos, gastos y deudas familiares, aprendiendo paso a paso HTML, CSS, JavaScript, Git, GitHub y tecnologias Full Stack.
+Construir una aplicacion para organizar ingresos, gastos y creditos familiares, aprendiendo paso a paso HTML, CSS, JavaScript, Git, GitHub y tecnologias Full Stack.
 
 ## Estado actual
 
-El proyecto ya cuenta con un dashboard funcional para registrar y revisar ingresos, gastos y deudas familiares.
+El proyecto ya cuenta con un dashboard funcional para registrar y revisar ingresos, gastos y creditos familiares.
 
 Actualmente el proyecto tiene:
 
 - estructura HTML semantica,
 - configuracion basica para caracteres,
 - configuracion responsive inicial,
-- secciones para ingresos, gastos y deudas,
+- secciones para ingresos, gastos y creditos/compras en cuotas,
 - datos financieros representados como arrays de objetos en JavaScript,
 - hoja de estilos externa,
 - archivo JavaScript con logica completa conectado,
@@ -177,32 +177,37 @@ Actualmente el proyecto tiene:
 - colores de balance segun estado (positivo, negativo, cero),
 - botones "Eliminar" en cada elemento de las listas,
 - funcion centralizada `renderAll()` que refresca todo automaticamente,
-- formularios para agregar ingresos, gastos y deudas desde la interfaz,
-- validaciones basicas para nombres, montos, fechas, categorias y estados,
+- formularios para agregar ingresos, gastos y creditos desde la interfaz,
+- validaciones basicas para nombres, montos, fechas y categorias,
 - fechas formateadas para mostrarlas de forma mas clara,
 - identificadores unicos para los registros nuevos,
 - persistencia de datos usando `localStorage`,
 - boton para reiniciar los datos de ejemplo,
 - filtro de gastos por categoria,
-- estructura inicial para compras en cuotas.
+- filtros por mes para ingresos, gastos y cuotas,
+- busqueda por nombre en las tres secciones,
+- edicion y eliminacion con confirmacion,
+- registro de cuotas pagadas y opcion para deshacer pagos,
+- historial de cuotas con fechas y montos,
+- migracion de datos antiguos de deudas y compras en cuotas,
+- calculos separados en `js/calculos.js`,
+- pruebas automatizadas ejecutables con `npm test`,
+- nombres accesibles para los campos de los formularios.
 
 ## Tecnologias utilizadas
 
 - HTML
 - CSS
 - JavaScript
+- Node.js para ejecutar pruebas
 - Git
 - GitHub
 
-## Proximos pasos
+## Pendientes
 
-- Mostrar las compras en cuotas dentro de la interfaz.
-- Agregar un formulario para registrar nuevas compras en cuotas.
-- Calcular el valor mensual de cada cuota.
-- Mostrar el historial y las fechas de pago de cada compra.
-- Agregar edicion de registros existentes.
-- Crear filtros por mes y una busqueda por nombre.
-- Actualizar el README despues de cada avance importante.
+- hacer una ultima revision general de accesibilidad y experiencia de uso;
+- agregar pruebas para validaciones y `localStorage`;
+- publicar la aplicacion en internet.
 
 ## Sesion de repaso de fundamentos
 
@@ -328,9 +333,11 @@ Durante esta sesion:
 - se separaron las funciones de calculo para poder probarlas fuera del navegador;
 - se agregaron pruebas basicas para cuotas, totales, estados de pago y fechas.
 - se agregaron nombres accesibles a los campos de los formularios sin cambiar su apariencia.
+- se separaron las validaciones y la lectura de `localStorage` para probarlas automaticamente;
+- se agregaron pruebas para nombres, montos, fechas, cuotas, arrays y JSON invalido.
 
 La informacion se guarda en `localStorage` y ahora se muestra en pantalla junto con el progreso y la fecha estimada de termino.
 
 Proximo paso:
 
-- mejorar la accesibilidad y los mensajes de estado de los filtros.
+- revisar la aplicacion publicada y cerrar la primera version del proyecto.

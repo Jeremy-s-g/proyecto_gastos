@@ -53,26 +53,17 @@ function cargarDatosIniciales() {
 }
 
 function cargarDatos() {
-  const datosGuardados = localStorage.getItem("datos");
+  const datos = leerDatosGuardados(localStorage);
 
-  if (datosGuardados) {
-    try {
-      const datos = JSON.parse(datosGuardados);
-      ingresos = obtenerArraySeguro(datos.ingresos);
-      gastos = obtenerArraySeguro(datos.gastos);
-      creditos = Array.isArray(datos.creditos)
-        ? datos.creditos
-        : migrarCreditos(datos.deudas, datos.comprasCuotas);
-    } catch (error) {
-      cargarDatosIniciales();
-    }
+  if (datos) {
+    ingresos = obtenerArraySeguro(datos.ingresos);
+    gastos = obtenerArraySeguro(datos.gastos);
+    creditos = Array.isArray(datos.creditos)
+      ? datos.creditos
+      : migrarCreditos(datos.deudas, datos.comprasCuotas);
   } else {
     cargarDatosIniciales();
   }
-}
-
-function obtenerArraySeguro(valor) {
-  return Array.isArray(valor) ? valor : [];
 }
 
 function guardarDatos() {
@@ -560,12 +551,12 @@ document.getElementById("form-gasto").addEventListener("submit", function (e) {
   const categoria = document.getElementById("input-categoria-gasto").value;
   const fecha = document.getElementById("input-fecha-gasto").value;
 
-  if (!nombre) {
+  if (!validarNombre(nombre)) {
     mostrarError("error-gasto", "El nombre del gasto es obligatorio.", "input-nombre-gasto");
     return;
   }
 
-  if (Number.isNaN(monto) || monto <= 0) {
+  if (!validarMonto(monto)) {
     mostrarError("error-gasto", "El monto debe ser mayor que cero.", "input-monto-gasto");
     return;
   }
@@ -575,7 +566,7 @@ document.getElementById("form-gasto").addEventListener("submit", function (e) {
     return;
   }
 
-  if (!fecha) {
+  if (!validarFecha(fecha)) {
     mostrarError("error-gasto", "La fecha es obligatoria.", "input-fecha-gasto");
     return;
   }
@@ -605,17 +596,17 @@ document.getElementById("form-ingreso").addEventListener("submit", function (e) 
   const monto = Number(document.getElementById("input-monto-ingreso").value);
   const fecha = document.getElementById("input-fecha-ingreso").value;
 
-  if (!nombre) {
+  if (!validarNombre(nombre)) {
     mostrarError("error-ingreso", "El nombre del ingreso es obligatorio.", "input-nombre-ingreso");
     return;
   }
 
-  if (Number.isNaN(monto) || monto <= 0) {
+  if (!validarMonto(monto)) {
     mostrarError("error-ingreso", "El monto debe ser mayor que cero.", "input-monto-ingreso");
     return;
   }
 
-  if (!fecha) {
+  if (!validarFecha(fecha)) {
     mostrarError("error-ingreso", "La fecha es obligatoria.", "input-fecha-ingreso");
     return;
   }
@@ -646,22 +637,22 @@ document.getElementById("form-credito").addEventListener("submit", function (e) 
   const fechaInicio = document.getElementById("input-fecha-credito").value;
   const tipo = document.getElementById("input-tipo-credito").value;
 
-  if (!nombre || !/[A-Za-zÁÉÍÓÚáéíóúÑñ]/.test(nombre)) {
+  if (!validarNombre(nombre)) {
     mostrarError("error-credito", "El nombre debe contener al menos una letra.", "input-nombre-credito");
     return;
   }
 
-  if (Number.isNaN(montoTotal) || montoTotal <= 0) {
+  if (!validarMonto(montoTotal)) {
     mostrarError("error-credito", "El monto debe ser mayor que cero.", "input-monto-credito");
     return;
   }
 
-  if (!Number.isInteger(cantidadCuotas) || cantidadCuotas <= 0) {
+  if (!validarCantidadCuotas(cantidadCuotas)) {
     mostrarError("error-credito", "La cantidad de cuotas debe ser un numero entero mayor que cero.", "input-cantidad-cuotas-credito");
     return;
   }
 
-  if (!fechaInicio) {
+  if (!validarFecha(fechaInicio)) {
     mostrarError("error-credito", "La fecha de inicio es obligatoria.", "input-fecha-credito");
     return;
   }

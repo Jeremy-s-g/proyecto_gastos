@@ -336,6 +336,9 @@ Durante esta sesion:
 - se separaron las validaciones y la lectura de `localStorage` para probarlas automaticamente;
 - se agregaron pruebas para nombres, montos, fechas, cuotas, arrays y JSON invalido.
 - los mensajes de error de los formularios ahora se anuncian a lectores de pantalla.
+- se agrego un boton para descargar un respaldo de los datos en formato JSON.
+- se agrego importacion de respaldos JSON con validacion y confirmacion antes de reemplazar los datos actuales.
+- se agregaron graficos de gastos agrupados por categoria y por mes.
 - se preparo un workflow para publicar automaticamente el proyecto en GitHub Pages despues de cada push a `master`.
 
 La informacion se guarda en `localStorage` y ahora se muestra en pantalla junto con el progreso y la fecha estimada de termino.

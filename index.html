@@ -17,6 +17,15 @@
       </div>
 
       <div class="topbar-actions">
+        <button class="reset-button export-button" id="btn-exportar-datos" type="button">
+          <span class="material-symbols-outlined">download</span>
+          Exportar datos
+        </button>
+        <button class="reset-button export-button" id="btn-importar-datos" type="button">
+          <span class="material-symbols-outlined">upload_file</span>
+          Importar datos
+        </button>
+        <input id="archivo-importar-datos" type="file" accept=".json,application/json" hidden>
         <button class="reset-button" id="btn-reiniciar-datos" type="button">
           <span class="material-symbols-outlined">restart_alt</span>
           Reiniciar datos
@@ -176,6 +185,24 @@
               <button type="button" id="btn-cancelar-credito" class="cancel-button" hidden>Cancelar</button>
             </form>
           </div>
+        </article>
+      </section>
+
+      <section class="insights-grid" aria-label="Graficos financieros">
+        <article class="finance-card chart-card">
+          <div class="card-header">
+            <h2>Gastos por categoria</h2>
+            <span class="material-symbols-outlined negative">bar_chart</span>
+          </div>
+          <div class="chart-list" id="grafico-categorias"></div>
+        </article>
+
+        <article class="finance-card chart-card">
+          <div class="card-header">
+            <h2>Gastos por mes</h2>
+            <span class="material-symbols-outlined muted">calendar_month</span>
+          </div>
+          <div class="chart-list" id="grafico-meses"></div>
         </article>
       </section>
 

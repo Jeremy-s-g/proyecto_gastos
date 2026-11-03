@@ -70,6 +70,55 @@ function guardarDatos() {
   localStorage.setItem("datos", JSON.stringify({ ingresos, gastos, creditos }));
 }
 
+function exportarDatos() {
+  const datos = { ingresos, gastos, creditos };
+  const archivo = new Blob([JSON.stringify(datos, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(archivo);
+  const enlace = document.createElement("a");
+
+  enlace.href = url;
+  enlace.download = "gastos-familiares-respaldo.json";
+  enlace.click();
+  URL.revokeObjectURL(url);
+  showToast();
+}
+
+async function importarDatos(archivo) {
+  if (!archivo) {
+    return;
+  }
+
+  try {
+    const datos = JSON.parse(await archivo.text());
+    const ingresosImportados = datos && datos.ingresos;
+    const gastosImportados = datos && datos.gastos;
+    const creditosImportados = datos && datos.creditos;
+
+    if (!Array.isArray(ingresosImportados) || !Array.isArray(gastosImportados)) {
+      throw new Error("Estructura invalida");
+    }
+
+    const creditosCargados = Array.isArray(creditosImportados)
+      ? creditosImportados
+      : migrarCreditos(
+        Array.isArray(datos.deudas) ? datos.deudas : [],
+        Array.isArray(datos.comprasCuotas) ? datos.comprasCuotas : []
+      );
+
+    if (!confirm("La importacion reemplazara los datos actuales. Continuar?")) {
+      return;
+    }
+
+    ingresos = ingresosImportados;
+    gastos = gastosImportados;
+    creditos = creditosCargados;
+    renderAll();
+    showToast();
+  } catch (error) {
+    alert("No se pudo importar el archivo. Verifica que sea un respaldo JSON valido.");
+  }
+}
+
 function migrarCreditos(deudasGuardadas = [], comprasGuardadas = []) {
   const creditosMigrados = deudasGuardadas.map((deuda) => ({
     id: deuda.id || generarId("credito"),
@@ -245,6 +294,52 @@ function crearBotonEliminar(label, onDelete) {
 function renderEmptyState(container, mensaje) {
   container.innerHTML = "";
   container.appendChild(crearElemento("p", "empty-state", mensaje));
+}
+
+function crearTotalesPorClave(array, obtenerClave) {
+  const totales = {};
+
+  for (const item of array) {
+    const clave = obtenerClave(item);
+    totales[clave] = (totales[clave] || 0) + item.monto;
+  }
+
+  return Object.entries(totales).sort((a, b) => b[1] - a[1]);
+}
+
+function renderGrafico(containerId, valores, mensaje) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = "";
+
+  if (valores.length === 0) {
+    renderEmptyState(container, mensaje);
+    return;
+  }
+
+  const valorMaximo = valores[0][1];
+
+  for (const [etiqueta, valor] of valores) {
+    const fila = crearElemento("div", "chart-row");
+    const encabezado = crearElemento("div", "chart-label");
+    const barra = crearElemento("div", "chart-track");
+    const progreso = crearElemento("div", "chart-bar");
+
+    encabezado.appendChild(crearElemento("span", "", etiqueta));
+    encabezado.appendChild(crearElemento("strong", "", formatearMoneda(valor)));
+    progreso.style.width = `${(valor / valorMaximo) * 100}%`;
+    barra.appendChild(progreso);
+    fila.appendChild(encabezado);
+    fila.appendChild(barra);
+    container.appendChild(fila);
+  }
+}
+
+function renderGraficos() {
+  const gastosPorCategoria = crearTotalesPorClave(gastos, (gasto) => gasto.categoria || "Sin categoria");
+  const gastosPorMes = crearTotalesPorClave(gastos, (gasto) => gasto.fecha ? gasto.fecha.slice(0, 7) : "Sin fecha");
+
+  renderGrafico("grafico-categorias", gastosPorCategoria, "Sin gastos para mostrar.");
+  renderGrafico("grafico-meses", gastosPorMes, "Sin fechas para mostrar.");
 }
 
 function renderIngresos() {
@@ -525,6 +620,7 @@ function renderAll() {
   renderIngresos();
   renderGastos();
   renderCreditos();
+  renderGraficos();
   guardarDatos();
 }
 
@@ -688,6 +784,14 @@ document.getElementById("form-credito").addEventListener("submit", function (e) 
 });
 
 document.getElementById("btn-reiniciar-datos").addEventListener("click", reiniciarDatos);
+document.getElementById("btn-exportar-datos").addEventListener("click", exportarDatos);
+document.getElementById("btn-importar-datos").addEventListener("click", function () {
+  document.getElementById("archivo-importar-datos").click();
+});
+document.getElementById("archivo-importar-datos").addEventListener("change", function (event) {
+  importarDatos(event.target.files[0]);
+  event.target.value = "";
+});
 document.getElementById("filtro-categoria-gastos").addEventListener("change", renderGastos);
 document.getElementById("filtro-mes-ingresos").addEventListener("change", renderIngresos);
 document.getElementById("filtro-mes-gastos").addEventListener("change", renderGastos);

@@ -1,6 +1,8 @@
 let ingresos = [];
 let gastos = [];
 let creditos = [];
+let perfiles = [];
+let perfilActivoId = null;
 let creditoEditandoId = null;
 let registroEditando = { tipo: null, id: null };
 let toastTimer = null;
@@ -55,19 +57,59 @@ function cargarDatosIniciales() {
 function cargarDatos() {
   const datos = leerDatosGuardados(localStorage);
 
-  if (datos) {
-    ingresos = obtenerArraySeguro(datos.ingresos);
-    gastos = obtenerArraySeguro(datos.gastos);
-    creditos = Array.isArray(datos.creditos)
-      ? datos.creditos
-      : migrarCreditos(datos.deudas, datos.comprasCuotas);
+  if (datos && Array.isArray(datos.perfiles) && datos.perfiles.length > 0) {
+    perfiles = datos.perfiles;
+    perfilActivoId = datos.perfilActivoId || perfiles[0].id;
+    cargarPerfilActivo();
+  } else if (datos) {
+    perfiles = [crearPerfil("Familia", datos)];
+    perfilActivoId = perfiles[0].id;
+    cargarPerfilActivo();
   } else {
     cargarDatosIniciales();
+    perfiles = [crearPerfil("Familia")];
+    perfilActivoId = perfiles[0].id;
   }
 }
 
 function guardarDatos() {
-  localStorage.setItem("datos", JSON.stringify({ ingresos, gastos, creditos }));
+  const perfil = perfiles.find((item) => item.id === perfilActivoId);
+
+  if (perfil) {
+    perfil.ingresos = ingresos;
+    perfil.gastos = gastos;
+    perfil.creditos = creditos;
+  }
+
+  localStorage.setItem("datos", JSON.stringify({ perfiles, perfilActivoId }));
+}
+
+function crearPerfil(nombre, datos = {}) {
+  return {
+    id: generarId("perfil"),
+    nombre,
+    ingresos: obtenerArraySeguro(datos.ingresos),
+    gastos: obtenerArraySeguro(datos.gastos),
+    creditos: Array.isArray(datos.creditos)
+      ? datos.creditos
+      : migrarCreditos(
+        Array.isArray(datos.deudas) ? datos.deudas : [],
+        Array.isArray(datos.comprasCuotas) ? datos.comprasCuotas : []
+      )
+  };
+}
+
+function cargarPerfilActivo() {
+  const perfil = perfiles.find((item) => item.id === perfilActivoId) || perfiles[0];
+
+  if (!perfil) {
+    return;
+  }
+
+  perfilActivoId = perfil.id;
+  ingresos = obtenerArraySeguro(perfil.ingresos);
+  gastos = obtenerArraySeguro(perfil.gastos);
+  creditos = obtenerArraySeguro(perfil.creditos);
 }
 
 function exportarDatos() {
@@ -294,6 +336,48 @@ function crearBotonEliminar(label, onDelete) {
 function renderEmptyState(container, mensaje) {
   container.innerHTML = "";
   container.appendChild(crearElemento("p", "empty-state", mensaje));
+}
+
+function renderPerfiles() {
+  const lista = document.getElementById("lista-perfiles");
+  lista.innerHTML = "";
+
+  for (const perfil of perfiles) {
+    const fila = crearElemento("div", "profile-row");
+    const botonPerfil = crearElemento("button", "profile-option", perfil.nombre);
+    botonPerfil.type = "button";
+    botonPerfil.classList.toggle("active", perfil.id === perfilActivoId);
+    botonPerfil.addEventListener("click", function () {
+      guardarDatos();
+      perfilActivoId = perfil.id;
+      cargarPerfilActivo();
+      renderAll();
+      document.getElementById("dialogo-perfiles").close();
+    });
+    fila.appendChild(botonPerfil);
+
+    if (perfiles.length > 1) {
+      const botonEliminar = crearElemento("button", "delete-button");
+      botonEliminar.type = "button";
+      botonEliminar.setAttribute("aria-label", `Eliminar perfil ${perfil.nombre}`);
+      botonEliminar.innerHTML = '<span class="material-symbols-outlined">delete</span>';
+      botonEliminar.addEventListener("click", function () {
+        if (!confirm(`Eliminar el perfil ${perfil.nombre}?`)) {
+          return;
+        }
+
+        perfiles = perfiles.filter((item) => item.id !== perfil.id);
+        if (perfil.id === perfilActivoId) {
+          perfilActivoId = perfiles[0].id;
+          cargarPerfilActivo();
+        }
+        renderAll();
+      });
+      fila.appendChild(botonEliminar);
+    }
+
+    lista.appendChild(fila);
+  }
 }
 
 function crearTotalesPorClave(array, obtenerClave) {
@@ -621,6 +705,7 @@ function renderAll() {
   renderGastos();
   renderCreditos();
   renderGraficos();
+  renderPerfiles();
   guardarDatos();
 }
 
@@ -784,6 +869,29 @@ document.getElementById("form-credito").addEventListener("submit", function (e) 
 });
 
 document.getElementById("btn-reiniciar-datos").addEventListener("click", reiniciarDatos);
+document.getElementById("btn-perfil").addEventListener("click", function () {
+  document.getElementById("dialogo-perfiles").showModal();
+});
+document.getElementById("btn-cerrar-perfiles").addEventListener("click", function () {
+  document.getElementById("dialogo-perfiles").close();
+});
+document.getElementById("form-perfil").addEventListener("submit", function (event) {
+  event.preventDefault();
+  const input = document.getElementById("input-nombre-perfil");
+  const nombre = input.value.trim();
+
+  if (!validarNombre(nombre)) {
+    mostrarError("error-perfil", "El nombre debe contener al menos una letra.", "input-nombre-perfil");
+    return;
+  }
+
+  perfiles.push(crearPerfil(nombre));
+  input.value = "";
+  mostrarError("error-perfil", "");
+  renderPerfiles();
+  guardarDatos();
+  showToast();
+});
 document.getElementById("btn-exportar-datos").addEventListener("click", exportarDatos);
 document.getElementById("btn-importar-datos").addEventListener("click", function () {
   document.getElementById("archivo-importar-datos").click();

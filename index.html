@@ -33,7 +33,9 @@
         <button class="icon-button" type="button" aria-label="Buscar">
           <span class="material-symbols-outlined">search</span>
         </button>
-        <img class="avatar" src="assets/advisor-profile.jpg" alt="Perfil financiero familiar">
+        <button class="avatar-button" id="btn-perfil" type="button" aria-label="Abrir perfiles">
+          <span class="material-symbols-outlined profile-icon">groups</span>
+        </button>
       </div>
     </header>
 
@@ -208,6 +210,21 @@
 
       <div class="toast" id="interaction-overlay" role="status">Cambios guardados</div>
     </main>
+
+    <dialog id="dialogo-perfiles" aria-labelledby="titulo-perfiles">
+      <div class="dialog-header">
+        <h2 id="titulo-perfiles">Perfiles</h2>
+        <button class="icon-button" id="btn-cerrar-perfiles" type="button" aria-label="Cerrar perfiles">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="profile-list" id="lista-perfiles"></div>
+      <form id="form-perfil" class="compact-form">
+        <input type="text" id="input-nombre-perfil" placeholder="Nombre del perfil" aria-label="Nombre del perfil" required>
+        <p class="mensaje-error" id="error-perfil" role="alert"></p>
+        <button type="submit">Crear perfil</button>
+      </form>
+    </dialog>
 
     <footer class="site-footer">
       <div>
